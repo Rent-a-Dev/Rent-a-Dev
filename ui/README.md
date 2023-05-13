@@ -1,5 +1,11 @@
 # UI Documentation
 
+## Starting the server
+
+`npm i`
+
+`npm run dev`
+
 ## Express
 
 ```js
