@@ -13,21 +13,28 @@ const requests = [
 ];
 
 const developers = [
-  { developerId: 1, firstName: 'William', lastName: 'Brooks', available: true, teamId: 2},
-  { developerId: 2, firstName: 'Kyle', lastName: 'Jenkins', available: false, teamId: 1},
-  { developerId: 3, firstName: 'Bob', lastName: 'Stevenson', available: true, teamId: 1},
+  { developerId: 1, firstName: 'William', lastName: 'Brooks', available: true, team: { teamName: 'VODO', teamLead: { firstName: 'Benjamin' } } },
+  { developerId: 2, firstName: 'Kyle', lastName: 'Jenkins', available: false, team: { teamName: 'ATC', teamLead: { firstName: 'Lucky' } } },
+  { developerId: 3, firstName: 'Bob', lastName: 'Stevenson', available: true, team: { teamName: 'ATC', teamLead: { firstName: 'Lucky' } } },
+  { developerId: 1, firstName: 'William', lastName: 'Brooks', available: true, team: { teamName: 'VODO', teamLead: { firstName: 'Benjamin' } } },
+  { developerId: 2, firstName: 'Kyle', lastName: 'Jenkins', available: false, team: { teamName: 'ATC', teamLead: { firstName: 'Lucky' } } },
+  { developerId: 3, firstName: 'Bob', lastName: 'Stevenson', available: true, team: { teamName: 'ATC', teamLead: { firstName: 'Lucky' } } },
 ];
  
-app.get("/viewRequests", function(req, res) {  
-  res.render("pages/viewRequests", {data: requests});
+app.get('/viewRequests', function(req, res) {  
+  res.render('pages/viewRequests', {data: requests});
 });
 
-app.get("/approveRequests", function(req, res) {  
-  res.render("pages/approveRequests", {data: requests});
+app.get('/approveRequests', function(req, res) {  
+  res.render('pages/approveRequests', {data: requests});
 });
 
-app.get("/", function(req, res) {  
-  res.render("pages/index");
+app.get('/viewDevs', function(req, res) {
+  res.render('pages/viewDevs', {data: developers});
+});
+
+app.get('/', function(req, res) {  
+  res.render('pages/index');
 });
 
 

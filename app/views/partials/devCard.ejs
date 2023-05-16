@@ -1,0 +1,32 @@
+<article class="devCard">
+  <p>
+    <strong>
+      <%= dev.firstName %> <%= dev.lastName %>
+    </strong>
+  </p>
+
+  <figure class="profile">
+
+    <img src="images/userIcon.svg" alt="userIcon">
+  </figure>
+
+  <p>
+    Available: <%= dev.available && 'Yes' || 'No' %>
+  </p>
+
+  <p>
+    Team: <%= dev.team.teamName %>
+  </p>
+
+  <p>
+    Lead: <%= dev.team.teamLead.firstName %>
+  </p>
+
+  <p>
+    Skills:
+  </p>
+
+  <button class="profileRequest" onclick="alert('Coming Soon!')">
+    Request
+  </button>
+</article>
