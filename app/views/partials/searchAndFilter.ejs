@@ -1,0 +1,172 @@
+<style>
+  .Search-And-Filter {
+    display: flex;
+    flex-direction: column;
+    max-width: 15rem;
+    background-color: #679186;
+    border-radius: 1rem;
+    align-items: center;
+    padding: 2rem 1rem;
+  }
+
+  .Search-And-Filter h2 {
+    color: #FDEBD3;
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: "Inter";
+  }
+
+  .Search-And-Filter label {
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: "Inter";
+  }
+
+  .Search-And-Filter input {
+    width: 70%;
+    height: 2rem;
+    border: 0.5rem;
+  }
+
+  .add-dev-details {
+    display: flex;
+    flex-direction: column;
+    max-width: fit-content;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    transition: .5s;
+  }
+
+  .add-dev-details summary {
+    cursor: pointer;
+  }
+
+  .add-dev-details summary>* {
+    display: inline;
+  }
+
+  .filters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+    row-gap: 1rem;
+  }
+
+  .filters select {
+    width: 70%;
+    height: 2rem;
+  }
+
+  .SubmitButton {
+    font-size: 1.5rem;
+    background-color: #264E70;
+    color: white;
+    width: fit-content;
+    height: fit-content;
+    padding: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .inputDetails {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+    row-gap: 1rem;
+  }
+
+  .inputDetails input {
+    width: 70%;
+    height: 2rem;
+    border-radius: 0.5rem;
+  }
+
+  .inputDetails select {
+    width: 70%;
+    height: 4rem;
+  }
+</style>
+
+<article class="Search-And-Filter">
+  <h2>Search by Name:</h2>
+  <input type="search" />
+  <h2>Filters</h2>
+
+  <section class="filters">
+    <% if(requestsPage) { %>
+      <label for="TeamFilter">Team:</label>
+      <select name="Team}Filter" id="TeamFilter">
+        <option value="Anne">Anne</option>
+      </select>
+
+      <label for="LeadFilter">Lead:</label>
+      <select name="LeadFilter" id="LeadFilter">
+        <option value="Anne">Jarred</option>
+      </select>
+      <% } %>
+
+        <label for="SkillsFilter">Skills:</label>
+        <select name="SkillsFilter" id="SkillsFilter">
+          <option value="Anne">Java</option>
+
+        </select>
+  </section>
+
+  <% if(!requestsPage) { %>
+    <details class="add-dev-details">
+      <summary>
+        <h2>Add a New Dev</h2>
+      </summary>
+      <section class="inputDetails">
+        <label for="nameInput">Name:</label>
+        <input type="text" name="nameInput" id="nameInput" />
+
+        <label for="surnameInput">Surname:</label>
+        <input type="text" name="surnameInput" id="surnameInput" />
+
+        <label for="teamInput">Team:</label>
+        <input type="text" name="teamInput" id="teamInput" />
+
+        <label for="skillsInput">Skills:</label>
+        <select name="skillsInput" id="skillsInput" multiple>
+          <option value="Java">Java</option>
+          <option value="C#">C#</option>
+        </select>
+      </section>
+
+      <button class="SubmitButton" onclick="addDevSubmit()">Add Dev</button>
+    </details>
+    <% } %>
+</article>
+
+<script>
+  const name = document.getElementById( "nameInput" );
+  const surname = document.getElementById( "surnameInput" );
+  const team = document.getElementById( "teamInput" );
+  const Skills = document.getElementById( "skillsInput" );
+
+  //This will then call the backend api to add a dev to the db
+  function addDevSubmit () {
+    const selectedSkills = [ ...Skills.options ].filter( option => option.selected ).map( option => option.value );
+
+
+  }
+
+  function filterTableResults () {
+
+  }
+
+  function searchInTable () {
+
+  }
+
+
+
+
+
+</script>
