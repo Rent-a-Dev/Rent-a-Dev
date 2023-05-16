@@ -17,13 +17,13 @@ function configurePage() {
 
   if (isApproveRequestsPage) {
     columnName.innerHTML = 'Requested by';
-    for (column of columns) {
+    for (const column of columns) {
       column.classList.add('visibleColumn');
     }
   }
   else {
     columnName.innerHTML = 'Team Lead';
-    for (column of columns) {
+    for (const column of columns) {
       column.classList.add('hiddenColumn');
     }
   }
