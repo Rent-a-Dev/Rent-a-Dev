@@ -2,6 +2,10 @@ import {
   db,
 } from './dbConfig.js';
 
+import {
+  requestStatuses,
+} from '../enums/requests.js';
+
 export const dbHandler = () => {
 
   const insertNewDeveloper = (firstName, lastName, available, teamId) => {
@@ -172,6 +176,62 @@ export const dbHandler = () => {
       });
   };
 
+  const updateRequestStatus = (requestId, developerId, requestStatus) => {
+
+    let sql = `UPDATE requests SET request_status = \"${requestStatus}\" WHERE request_id = ${requestId}`;
+
+    db.run(
+      sql,
+      function (err) {
+        if (err) {
+          return console.log(err.message);
+        }
+        console.log('Record updated');
+      });
+
+    if (requestStatus === requestStatuses.Accepted) {
+
+      sql = `UPDATE developers SET available = false WHERE developer_id = \"${developerId}\"`;
+
+      db.run(
+        sql,
+        function (err) {
+          if (err) {
+            return console.log(err.message);
+          }
+          console.log('Record updated');
+        });
+    }
+
+    if (requestStatus === requestStatuses.Denied) {
+
+      sql = `UPDATE developers SET available = true WHERE developer_id = \"${developerId}\"`;
+
+      db.run(
+        sql,
+        function (err) {
+          if (err) {
+            return console.log(err.message);
+          }
+          console.log('Record updated');
+        });
+    }
+
+    if (requestStatus === requestStatuses.Pending) {
+
+      sql = `UPDATE developers SET available = true WHERE developer_id = \"${developerId}\"`;
+
+      db.run(
+        sql,
+        function (err) {
+          if (err) {
+            return console.log(err.message);
+          }
+          console.log('Record updated');
+        });
+    }
+  };
+
   const closeDatabase = () => {
 
     db.close((err) => {
@@ -192,5 +252,6 @@ export const dbHandler = () => {
     createRequest,
     getLoggedInTeamLead,
     closeDatabase,
+    updateRequestStatus,
   };
 };
