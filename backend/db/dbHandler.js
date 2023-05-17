@@ -4,7 +4,7 @@ import {
 
 import {
   requestStatuses,
-} from '../backend/enums/requests.js';
+} from '../enums/requests.js';
 
 export const dbHandler = () => {
 

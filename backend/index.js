@@ -1,8 +1,8 @@
 import {
   dbHandler,
-} from '../db/dbHandler.js';
+} from './db/dbHandler.js';
 
-import express from "express";
+import express from 'express';
 
 import bodyParser from 'body-parser';
 
