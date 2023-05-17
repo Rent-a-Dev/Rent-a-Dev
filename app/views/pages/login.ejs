@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Rent-A-Dev - Login</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h2>Login to Rent-A-Dev</h2>
+      <form action="https://github.com/login/oauth/authorize" method="GET">
+        <input type="hidden" name="client_id" value="YOUR_CLIENT_ID_HERE">
+        <input type="hidden" name="redirect_uri" value="YOUR_CALLBACK_URL_HERE">
+        <input type="hidden" name="scope" value="user">
+        <button type="submit">Login with GitHub</button>
+      </form>
+    </div>
+  </body>
+</html>
