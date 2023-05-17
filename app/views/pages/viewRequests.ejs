@@ -2,17 +2,19 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, 
         initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/css/Main.css" type="text/css">
+  <link rel="stylesheet" href="../../public/css/Main.css" type="text/css">
 
 </head>
 
-<body>
+<%- include('../partials/failPopUp', {myLabel: "WOW THIS IS AN ERROR" }) %>
+
+  <body>
     <%- include('../partials/home')%>
-        <main>
-            <%- include('../partials/searchAndFilter',{requestsPage: true, data: 2})%>
-                <%- include('../partials/requestTable', {isApproveRequests : false, data})%>
-        </main>
-</body>
+      <main>
+        <%- include('../partials/searchAndFilter',{requestsPage: true, data: 2})%>
+          <%- include('../partials/requestTable', {isApproveRequests : false, data})%>
+      </main>
+  </body>

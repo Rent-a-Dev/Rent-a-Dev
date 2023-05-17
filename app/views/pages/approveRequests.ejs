@@ -2,18 +2,25 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, 
         initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/css/Main.css" type="text/css">
+  <link rel="stylesheet" href="../../public/css/Main.css" type="text/css">
 
 </head>
 
-<body>
-    <%- include('../partials/home')%>
-        <main>
-            <%- include('../partials/searchAndFilter',{requestsPage: false, data})%>
 
-                <%- include('../partials/requestTable', {isApproveRequests : true, data})%>
-        </main>
+<body>
+  <%- include('../partials/availabilityPopUp', {name: 'Steve' , surname: 'Pinto' })%> <!-- <%-
+    include('../partials/successPopUp',{ myLabel: 'This does not work' })%> -->
+    <%- include('../partials/home')%>
+      <main>
+        <%- include('../partials/searchAndFilter',{requestsPage: false, data})%>
+
+          <%- include('../partials/requestTable', {isApproveRequests : true, data})%>
+      </main>
 </body>
+
+<script>
+  const labelHere = "your mom"
+</script>

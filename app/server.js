@@ -4,7 +4,10 @@ const port = 3000;
     
 app.set('view engine', 'ejs'); 
  
-app.use('/public', express.static(__dirname + '/public'));
+app.use(express.static('public'));
+// app.use('/public/css', express.static(__dirname + '/public/css'));
+// app.use('/public/js', express.static(__dirname + '/public/js'));
+
 
 app.get("/viewRequests", function(req, res) {  
     res.render("pages/viewRequests", {data: [{id: 0, name: 'James', teamLead: 'Anne', requestStatus: 'Pending', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03'}, 
@@ -13,7 +16,7 @@ app.get("/viewRequests", function(req, res) {
   });
 
 app.get("/approveRequests", function(req, res) {  
-    res.render("pages/approveRequests", {data: [{id: 0,name: 'James', teamLead: 'Anne', requestStatus: 'Pending', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03'}, 
+    res.render("pages/approveRequests", {label: "YOur mom",data: [{id: 0,name: 'James', teamLead: 'Anne', requestStatus: 'Pending', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03'}, 
                                                 {id: 1,name: 'James', teamLead: 'Anne', requestStatus: 'Approved', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03'}, 
                                                 {id: 2,name: 'James', teamLead: 'Anne', requestStatus: 'Rejected', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03'}]});
   });
