@@ -22,9 +22,16 @@
     Lead: <%= dev.team.teamLead.firstName %>
   </p>
 
-  <p>
-    Skills:
-  </p>
+  <details>
+    <summary>
+      View Skills
+    </summary>
+    <ul>
+      <% for (const skill of dev.skills || []) { %>
+        <li><%= skill.skill %>: <%= skill.proficiency %></li>
+      <% } %>
+    </ul>
+  </details>
 
   <button class="profileRequest" onclick="alert('Coming Soon!')">
     Request
