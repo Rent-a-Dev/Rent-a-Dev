@@ -1,16 +1,18 @@
 .Search-And-Filter {
   display: flex;
   flex-direction: column;
-  max-width: 15rem;
+  width: 26rem;
   background-color: #679186;
   border-radius: 1rem;
   align-items: center;
   padding: 2rem 1rem;
+  height: fit-content;
+  margin-top: 2rem;
 }
 
 .Search-And-Filter h2 {
   color: #FDEBD3;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   font-family: "Inter";
 }
@@ -36,10 +38,12 @@
   align-items: center;
   align-content: center;
   transition: .5s;
+  margin: 1rem 0rem;
 }
 
 .add-dev-details summary {
   cursor: pointer;
+  margin-bottom: 1rem;
 }
 
 .add-dev-details summary>* {
@@ -60,14 +64,8 @@
   height: 2rem;
 }
 
-.SubmitButton {
-  font-size: 1.5rem;
-  background-color: #264E70;
-  color: white;
-  width: fit-content;
-  height: fit-content;
-  padding: 0.5rem;
-  margin-top: 1rem;
+#AddDevButton {
+  margin: 1rem auto;
 }
 
 .inputDetails {

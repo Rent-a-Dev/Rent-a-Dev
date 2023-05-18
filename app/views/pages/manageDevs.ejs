@@ -1,9 +1,9 @@
-<%- include('../partials/head', {title: 'View Devs' }) %>
+<%- include('../partials/head', {title: 'Manage Devs' }) %>
 
   <link rel="stylesheet" href="css/viewDevs.css">
   <main id="ViewDevs">
 
-    <%- include('../partials/searchAndFilter',{requestsPage: true})%>
+    <%- include('../partials/searchAndFilter',{requestsPage: false})%>
       <section class="devCardContainer">
         <% for( let index=0; index < data.length; index++ ) { %>
           <%- include('../partials/devCard.ejs', {dev: data[index]}) %>
