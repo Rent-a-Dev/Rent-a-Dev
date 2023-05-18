@@ -1,48 +1,30 @@
-import {
-  dbHandler,
-} from './db/dbHandler.js';
-
-import express from 'express';
-
-import bodyParser from 'body-parser';
-
-import cors from 'cors';
-
-const app = express();
-
-app.use(bodyParser.json());
-app.use(cors());
-
 const {
-  insertNewDeveloper,
   getDevelopers,
+  insertNewDeveloper,
   getDevelopersSkills,
   getRequests,
   getTeamLeads,
   getTeams,
   createRequest,
   getLoggedInTeamLead,
-} = dbHandler();
+  closeDatabase,
+  updateRequestStatus,
+  getDevelopersWithAllInfo,
+} = require('./db/dbHandler.js');
 
-const developers = getDevelopers();
-console.log(developers);
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-const developerSkills = getDevelopersSkills();
-console.log(developerSkills);
+const app = express();
 
-const requests = getRequests();
-console.log(requests);
+app.use(bodyParser.json());
+app.use(cors());
 
-const teamLeads = getTeamLeads();
-console.log(teamLeads);
+(async () => {
 
-const teams = getTeams();
-console.log(teams);
-
-const loggedIn = getLoggedInTeamLead("NicholasJoannouBBD");
-console.log(loggedIn);
-
-const server = app.listen(process.env.PORT || 8080, function () {
-  const port = server.address().port;
-  console.log("Application running on port: ", port);
-});
+  const server = app.listen(process.env.PORT || 8080, function () {
+    const port = server.address().port;
+    console.log("Application running on port: ", port);
+  });
+})();
