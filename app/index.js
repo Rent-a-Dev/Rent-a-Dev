@@ -23,6 +23,23 @@ const get = async url => {
   }
 };
 
+const post = async (url, body) => {
+  try {
+    const response = await fetch(`${process.env.API}/${url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body,
+    });
+    const json = await response.json();
+
+    return json;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const requests = [
   { id: 0, name: 'James', teamLead: 'Anne', requestStatus: 'Pending', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03' },
   { id: 1, name: 'James', teamLead: 'Anne', requestStatus: 'Approved', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03' },
