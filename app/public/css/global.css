@@ -46,3 +46,7 @@ button {
 button:hover {
   background: #1c3a53;
 }
+
+summary {
+  cursor: pointer;
+}

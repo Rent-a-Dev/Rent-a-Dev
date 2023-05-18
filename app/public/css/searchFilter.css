@@ -1,7 +1,7 @@
 .Search-And-Filter {
   display: flex;
   flex-direction: column;
-  width: 26rem;
+  min-width: 19rem;
   background-color: #679186;
   border-radius: 1rem;
   align-items: center;
