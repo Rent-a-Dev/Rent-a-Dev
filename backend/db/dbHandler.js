@@ -247,18 +247,20 @@ const getRequests = () => {
 const createRequest = ({
   developerId,
   teamLeadId,
-  startDateTime,
-  endDateTime,
+  startDate,
+  endDate,
+  amountOfHours,
   requestStatus,
 }) => {
 
   let sql = `INSERT INTO requests (
       developer_id,
       team_lead_id,
-      start_datetime,
-      end_datetime,
+      start_date,
+      end_date,
+      amount_of_hours,
       request_status)
-      VALUES (${developerId}, ${teamLeadId}, \"${startDateTime}\", \"${endDateTime}\", \"${requestStatus}\")`;
+      VALUES (${developerId}, ${teamLeadId}, \"${startDate}\", \"${endDate}\", ${amountOfHours}, \"${requestStatus}\")`;
 
   db.run(
     sql,
@@ -405,8 +407,9 @@ const mapRequests = (requests) => {
       requestId: req.request_id,
       developerId: req.developer_id,
       teamLeadId: req.team_lead_id,
-      startDateTime: req.start_datetime,
-      endDateTime: req.end_datetime,
+      startDate: req.start_date,
+      endDate: req.end_date,
+      amountOfHours: req.amount_of_hours,
       requestStatus: req.request_status,
     });
   }
