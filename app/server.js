@@ -33,8 +33,12 @@ app.get('/viewDevs', function(req, res) {
   res.render('pages/viewDevs', {data: developers});
 });
 
-app.get('/', function(req, res) {  
+app.get('/index', function(req, res) {  
   res.render('pages/index');
+});
+
+app.get('/', function(req, res) {  
+  res.render('pages/login');
 });
 
 
