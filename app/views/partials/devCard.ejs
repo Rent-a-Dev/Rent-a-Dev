@@ -15,18 +15,25 @@
   </p>
 
   <p>
-    Team: <%= dev.team.teamName %>
+    Team: <%= dev.teamName %>
   </p>
 
   <p>
-    Lead: <%= dev.team.teamLead.firstName %>
+    Lead: <%= dev.teamLeadFirstName %>
   </p>
 
-  <p>
-    Skills:
-  </p>
+  <details>
+    <summary>
+      View Skills
+    </summary>
+    <ul class="skills">
+      <% for (const skill of dev.skills || []) { %>
+        <li><%= skill.skill %>: <%= skill.proficiency %></li>
+      <% } %>
+    </ul>
+  </details>
 
-  <button class="profileRequest" onclick="alert('Coming Soon!')">
+  <button class="cardButton" onclick="alert('Coming Soon!')">
     Request
   </button>
 </article>
