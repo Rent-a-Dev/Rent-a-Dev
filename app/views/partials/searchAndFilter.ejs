@@ -1,0 +1,56 @@
+<head>
+  <link rel="stylesheet" href="css/searchFilter.css" type="text/css">
+  <script src="js/search.js"></script>
+
+</head>
+<article class="Search-And-Filter">
+  <h2>Search by Name:</h2>
+  <input type="search" />
+  <h2>Filters</h2>
+
+  <section class="filters">
+    <% if(requestsPage) { %>
+      <label for="TeamFilter">Team:</label>
+      <select name="TeamFilter" id="TeamFilter">
+        <option value="Anne">Anne</option>
+      </select>
+
+      <label for="LeadFilter">Lead:</label>
+      <select name="LeadFilter" id="LeadFilter">
+        <option value="Anne">Jarred</option>
+      </select>
+      <% } %>
+
+        <label for="SkillsFilter">Skills:</label>
+        <select name="SkillsFilter" id="SkillsFilter">
+          <option value="Anne">Java</option>
+
+        </select>
+  </section>
+
+  <% if(!requestsPage) { %>
+    <details class="add-dev-details">
+      <summary>
+        <h2>Add a New Dev</h2>
+      </summary>
+      <section class="inputDetails">
+        <label for="nameInput">Name:</label>
+        <input type="text" name="nameInput" id="nameInput" />
+
+        <label for="surnameInput">Surname:</label>
+        <input type="text" name="surnameInput" id="surnameInput" />
+
+        <label for="teamInput">Team:</label>
+        <input type="text" name="teamInput" id="teamInput" />
+
+        <label for="skillsInput">Skills:</label>
+        <select name="skillsInput" id="skillsInput" multiple>
+          <option value="Java">Java</option>
+          <option value="C#">C#</option>
+        </select>
+      </section>
+
+      <button id="AddDevButton" onclick="addDevSubmit()">Add Dev</button>
+    </details>
+    <% } %>
+</article>

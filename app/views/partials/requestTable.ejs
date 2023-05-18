@@ -27,13 +27,9 @@
         <td>
           <details>
             <summary>
-              <!-- <button class="availabilityBtn" onclick="showHideAvailability()">v</button> -->
               See availability
             </summary>
-            <div
-              style="background-color: yellowgreen; border: 1px;">
-              <p>Some more really cool info</p>
-            </div>
+              <p>Hours: <%= row.hours%> <br/><br/> <%= row.startDate%> - <%= row.endDate%></p>
           </details>
         </td>
         <% if (isApproveRequests) { %>
@@ -44,17 +40,6 @@
         <% } %>
         <td>
           <%= row.requestStatus%>
-        </td>
-      </tr>
-      <tr class="availability hiddenRow" id=<%=row.id%>>
-        <th>Hours:</th>
-        <td>
-          <%= row.hours%>
-        </td>
-        <th>Date Range:</th>
-        <td class="availabilityColumn"></td>
-        <td>
-          <%= row.startDate%> - <%= row.endDate%>
         </td>
       </tr>
       <% }) %>

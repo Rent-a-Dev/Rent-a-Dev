@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="css/Main.css" type="text/css">
+<header>
+  <details>
+    <summary>Username</summary>
+    <button>Log-out</button>
+  </details>
+  <h1 class="MainHeading">
+    Rent-a-Dev
+  </h1>
+  <nav>
+    <a <% if (title === "View Devs") {%> class="currentLink" <%}%> href="/viewDevs">View available devs</a>
+    <a <% if (title === "Approve requests") {%> class="currentLink" <%}%> href="/approveRequests">View my request status</a>
+    <a <% if (title === "Team requests") {%> class="currentLink" <%}%> href="/viewRequests">View my team requests</a>
+    <a <% if (title === "Manage Devs") {%> class="currentLink" <%}%> href="/manageDevs">Manage my devs</a>
+  </nav>
+</header>
