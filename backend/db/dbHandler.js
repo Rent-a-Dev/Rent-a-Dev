@@ -1,14 +1,19 @@
 const { db } = require('./dbConfig.js');
 const { requestStatuses } = require('../enums/requests.js');
 
-const insertNewDeveloper = (firstName, lastName, available, teamId) => {
+const insertNewDeveloper = ({
+  firstName,
+  lastName,
+  available,
+  teamId,
+}) => {
 
   let sql = `INSERT INTO developers (
       first_name,
       last_name,
       available,
       team_id
-      VALUES (${firstName}, ${lastName}, ${available}, ${teamId})`;
+      VALUES (\"${firstName}\", \"${lastName}\", ${available}, ${teamId})`;
 
   db.run(
     sql,
@@ -239,7 +244,13 @@ const getRequests = () => {
     });
 };
 
-const createRequest = (developerId, teamLeadId, startDateTime, endDateTime, requestStatus) => {
+const createRequest = ({
+  developerId,
+  teamLeadId,
+  startDateTime,
+  endDateTime,
+  requestStatus,
+}) => {
 
   let sql = `INSERT INTO requests (
       developer_id,
@@ -259,7 +270,11 @@ const createRequest = (developerId, teamLeadId, startDateTime, endDateTime, requ
     });
 };
 
-const updateRequestStatus = (requestId, developerId, requestStatus) => {
+const updateRequestStatus = ({
+  requestId,
+  developerId,
+  requestStatus,
+}) => {
 
   let sql = `UPDATE requests SET request_status = \"${requestStatus}\" WHERE request_id = ${requestId}`;
 
