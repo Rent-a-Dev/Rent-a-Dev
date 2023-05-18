@@ -46,8 +46,9 @@ CREATE TABLE requests (
   request_id INTEGER PRIMARY KEY AUTOINCREMENT,
   developer_id INTEGER,
   team_lead_id INTEGER,
-  start_datetime DATETIME,
-  end_datetime DATETIME,
+  start_date DATE,
+  end_date DATE,
+  amount_of_hours INTEGER,
   request_status TEXT NOT NULL,
   FOREIGN KEY (developer_id) REFERENCES developers (developer_id),
   FOREIGN KEY (team_lead_id) REFERENCES team_leads (team_lead_id)
@@ -265,8 +266,8 @@ VALUES
 (29, 4, 3),
 (29, 17, 3);
 
-INSERT INTO requests (developer_id, team_lead_id, start_datetime, end_datetime, request_status)
+INSERT INTO requests (developer_id, team_lead_id, start_date, end_date, amount_of_hours, request_status)
 VALUES
-(1, 1, '2023-05-22 08:30:00', '2023-05-22 16:30:00', 'Pending'),
-(22, 2, '2023-05-24 12:00:00', '2023-05-28 15:00:00', 'Pending'),
-(5, 3, '2023-05-24 12:00:00', '2023-05-28 15:00:00', 'Denied');
+(1, 1, '2023-05-22', '2023-05-22', 5,'Pending'),
+(22, 2, '2023-05-24', '2023-05-28', 6,'Pending'),
+(5, 3, '2023-05-24', '2023-05-28', 8,'Denied');
