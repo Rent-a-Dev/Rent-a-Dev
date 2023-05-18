@@ -42,10 +42,6 @@ app.get('/viewDevs', async function (req, res) {
   res.render('pages/viewDevs', { data: developers || [] });
 });
 
-app.get('/viewDevs', function (req, res) {
-  res.render('pages/viewDevs', { data: developers });
-});
-
 app.get('/manageDevs', function (req, res) {
   res.render('pages/manageDevs', { data: developers });
 });
