@@ -27,7 +27,7 @@ app.get('/developers', function (req, res) {
   });
 });
 
-app.get('/developersSkills', function (req, res) {
+app.get('/developers/skills', function (req, res) {
   getDevelopersSkills().then(data => {
     res.send(data);
   });
@@ -51,27 +51,27 @@ app.get('/teams', function (req, res) {
   });
 });
 
-app.get('/developersAllInfo', function (req, res) {
+app.get('/developers/all', function (req, res) {
   getDevelopersWithAllInfo().then(data => {
     res.send(data);
   });
 });
 
-app.get('/loggedInTeamLead/:githubUsername', function (req, res) {
+app.get('/teamLead/loggedIn/:githubUsername', function (req, res) {
   getLoggedInTeamLead(req.params.githubUsername).then(data => {
     res.send(data);
   });
 });
 
-app.post('/createRequest', function (req, res) {
+app.post('/requests/create', function (req, res) {
   createRequest(req.body);
 });
 
-app.post('/addDeveloper', function (req, res) {
+app.post('/developers/add', function (req, res) {
   insertNewDeveloper(req.body);
 });
 
-app.put('/updateRequest', function (req, res) {
+app.put('/requests/update', function (req, res) {
   updateRequestStatus(req.body);
 });
 
