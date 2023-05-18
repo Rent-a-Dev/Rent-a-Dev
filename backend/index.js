@@ -21,10 +21,13 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-(async () => {
-
-  const server = app.listen(process.env.PORT || 8080, function () {
-    const port = server.address().port;
-    console.log("Application running on port: ", port);
+app.get('/developers', function (req, res) {
+  getDevelopers().then(data => {
+    res.send(data);
   });
-})();
+});
+
+const server = app.listen(process.env.PORT || 8080, function () {
+  const port = server.address().port;
+  console.log("Application running on port: ", port);
+});
