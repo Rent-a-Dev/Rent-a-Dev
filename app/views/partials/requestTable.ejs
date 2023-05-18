@@ -4,9 +4,15 @@
   <table>
     <tr id="headings">
       <th>Name</th>
-      <th id="teamLead"></th>
+      <% if (isApproveRequests) { %>
+        <th>Team Lead</th>
+      <% } else { %>
+        <th> Requested By </th>
+      <% } %>
       <th>Requested availability</th>
-      <th class="availabilityColumn">Approve/Reject</th>
+      <% if (isApproveRequests) { %>
+        <th class="availabilityColumn">Approve/Reject</th>
+      <% } %>
       <th>Request status</th>
     </tr>
 
@@ -18,11 +24,24 @@
         <td>
           <%= row.teamLead%>
         </td>
-        <td><button class="availabilityBtn" onclick="showHideAvailability(<%=row.id%>)">v</button></td>
-        <td class="availabilityColumn">
-          <button class="approveBtn" onclick="approveRequest(<%=row.id%>)">Approve</button>
-          <button class="rejectBtn" onclick="rejectRequest(<%=row.id%>)">Reject</button>
+        <td>
+          <details>
+            <summary>
+              <!-- <button class="availabilityBtn" onclick="showHideAvailability()">v</button> -->
+              See availability
+            </summary>
+            <div
+              style="background-color: yellowgreen; border: 1px;">
+              <p>Some more really cool info</p>
+            </div>
+          </details>
         </td>
+        <% if (isApproveRequests) { %>
+          <td class="availabilityColumn">
+            <button class="approveBtn" onclick="approveRequest(`<%=row.id%>`)">Approve</button>
+            <button class="rejectBtn" onclick="rejectRequest(`<%=row.id%>`)">Reject</button>
+          </td>
+        <% } %>
         <td>
           <%= row.requestStatus%>
         </td>
