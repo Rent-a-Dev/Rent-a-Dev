@@ -21,7 +21,28 @@ html {
   font-family: Inter;
 }
 
+footer hr {
+  border-color: #264E70;
+}
+
 @font-face {
   font-family: Inter;
   src: url(../fonts/Inter-VariableFont_slnt\,wght.ttf);
+}
+
+button {
+  background: #264E70;
+  border-radius: 1rem;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  color: #FFFFFF;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+button:hover {
+  background: #1c3a53;
 }
