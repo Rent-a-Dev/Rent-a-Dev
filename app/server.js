@@ -33,6 +33,10 @@ app.get('/viewDevs', function(req, res) {
   res.render('pages/viewDevs', {data: developers});
 });
 
+app.get('/manageDevs', function(req, res) {
+  res.render('pages/manageDevs', {data: developers});
+});
+
 app.get('/', function(req, res) {  
   res.render('pages/index');
 });
