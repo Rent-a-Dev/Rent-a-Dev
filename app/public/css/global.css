@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overscroll-behavior: none;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: linear-gradient(180deg, #264E70 54.94%, #FDEBD3 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #264E70;
+  font-family: Inter;
+}
+
+footer hr {
+  border-color: #264E70;
+}
+
+@font-face {
+  font-family: Inter;
+  src: url(../fonts/Inter-VariableFont_slnt\,wght.ttf);
+}
+
+button {
+  background: #264E70;
+  border-radius: 1rem;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  color: #FFFFFF;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+button:hover {
+  background: #1c3a53;
+}

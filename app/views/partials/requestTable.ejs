@@ -1,0 +1,50 @@
+<link rel="stylesheet" href="css/requestTable.css">
+
+<article id="requestTableContainer">
+  <table>
+    <tr id="headings">
+      <th>Name</th>
+      <% if (isApproveRequests) { %>
+        <th>Team Lead</th>
+      <% } else { %>
+        <th> Requested By </th>
+      <% } %>
+      <th>Requested availability</th>
+      <% if (isApproveRequests) { %>
+        <th class="availabilityColumn">Approve/Reject</th>
+      <% } %>
+      <th>Request status</th>
+    </tr>
+
+    <% data.forEach((row)=> {%>
+      <tr>
+        <td>
+          <%= row.name%>
+        </td>
+        <td>
+          <%= row.teamLead%>
+        </td>
+        <td>
+          <details>
+            <summary>
+              See availability
+            </summary>
+              <p>Hours: <%= row.hours%> <br/><br/> <%= row.startDate%> - <%= row.endDate%></p>
+          </details>
+        </td>
+        <% if (isApproveRequests) { %>
+          <td class="availabilityColumn">
+            <button class="approveBtn" onclick="approveRequest(`<%=row.id%>`)">Approve</button>
+            <button class="rejectBtn" onclick="rejectRequest(`<%=row.id%>`)">Reject</button>
+          </td>
+        <% } %>
+        <td>
+          <%= row.requestStatus%>
+        </td>
+      </tr>
+      <% }) %>
+  </table>
+</article>
+
+
+<script src="js/requestTable.js"></script>
