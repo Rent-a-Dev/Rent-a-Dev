@@ -1,26 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('../partials/head', {title: 'Approve requests' }) %>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, 
-        initial-scale=1.0">
-  <link rel="stylesheet" href="../../public/css/Main.css" type="text/css">
+  <%- include('../partials/requestTable', {isApproveRequests : true, data})%>
 
-</head>
-
-
-<body>
-  <%- include('../partials/availabilityPopUp', {name: 'Steve' , surname: 'Pinto' })%> <!-- <%-
-    include('../partials/successPopUp',{ myLabel: 'This does not work' })%> -->
-    <%- include('../partials/home')%>
-      <main>
-        <%- include('../partials/searchAndFilter',{requestsPage: false, data})%>
-
-          <%- include('../partials/requestTable', {isApproveRequests : true, data})%>
-      </main>
-</body>
-
-<script>
-  const labelHere = "your mom"
-</script>
+    <%- include('../partials/footer') %>
