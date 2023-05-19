@@ -1,10 +1,10 @@
 var mysql = require('mysql');
 
 var db = mysql.createConnection({
-  host: "localhost",
+  host: "rent-a-dev-mydb-mlm8gyowdhvd.cdpckwejswol.us-east-1.rds.amazonaws.com",
   port: 3306,
-  user: "root",
-  password: "MysqlBBDWaffles123",
+  user: "admin",
+  password: "WeLoveJavaScript",
   database: 'rentadev',
 });
 
