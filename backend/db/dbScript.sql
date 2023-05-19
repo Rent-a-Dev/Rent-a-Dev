@@ -1,55 +1,55 @@
 --Create statements
 CREATE TABLE team_leads (
-  team_lead_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  github_username TEXT NOT NULL UNIQUE
+  team_lead_id INT PRIMARY KEY AUTO_INCREMENT,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
+  github_username VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE teams (
-  team_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  team_name TEXT NOT NULL,
-  team_lead_id INTEGER,
+  team_id INT PRIMARY KEY AUTO_INCREMENT,
+  team_name VARCHAR(255) NOT NULL,
+  team_lead_id INT,
   FOREIGN KEY (team_lead_id) REFERENCES team_leads (team_lead_id)
 );
 
 CREATE TABLE developers (
-  developer_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
+  developer_id INT PRIMARY KEY AUTO_INCREMENT,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
   available BOOLEAN,
-  team_id INTEGER,
+  team_id INT,
   FOREIGN KEY (team_id) REFERENCES teams (team_id)
 );
 
 CREATE TABLE skills (
-  skill_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  skill TEXT NOT NULL
+  skill_id INT PRIMARY KEY AUTO_INCREMENT,
+  skill VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE proficiencies (
-  proficiency_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  proficiency TEXT NOT NULL
+  proficiency_id INT PRIMARY KEY AUTO_INCREMENT,
+  proficiency VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE developers_skills (
-  developer_skill_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  developer_id INTEGER,
-  skill_id INTEGER,
-  proficiency_id INTEGER,
+  developer_skill_id INT PRIMARY KEY AUTO_INCREMENT,
+  developer_id INT,
+  skill_id INT,
+  proficiency_id INT,
   FOREIGN KEY (developer_id) REFERENCES developers (developer_id),
   FOREIGN KEY (skill_id) REFERENCES skills (skill_id),
   FOREIGN KEY (proficiency_id) REFERENCES proficiencies (proficiency_id)
 );
 
 CREATE TABLE requests (
-  request_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  developer_id INTEGER,
-  team_lead_id INTEGER,
+  request_id INT PRIMARY KEY AUTO_INCREMENT,
+  developer_id INT,
+  team_lead_id INT,
   start_date DATE,
   end_date DATE,
-  amount_of_hours INTEGER,
-  request_status TEXT NOT NULL,
+  amount_of_hours INT,
+  request_status VARCHAR(255) NOT NULL,
   FOREIGN KEY (developer_id) REFERENCES developers (developer_id),
   FOREIGN KEY (team_lead_id) REFERENCES team_leads (team_lead_id)
 );
