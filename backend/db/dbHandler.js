@@ -12,10 +12,10 @@ const insertNewDeveloper = ({
       first_name,
       last_name,
       available,
-      team_id
+      team_id)
       VALUES (\"${firstName}\", \"${lastName}\", ${available}, ${teamId})`;
 
-  db.run(
+  db.query(
     sql,
     function (err) {
       if (err) {
@@ -31,7 +31,7 @@ const getDevelopers = () => {
   return new Promise(resolve => {
     let sql = 'SELECT * FROM developers';
 
-    db.all(sql, (err, res) => {
+    db.query(sql, (err, res) => {
       if (err) {
         return console.error(err.message);
       } else {
@@ -62,7 +62,7 @@ const getDevelopersWithTeamInfo = () => {
       JOIN team_leads
       ON teams.team_lead_id = team_leads.team_lead_id`;
 
-    db.all(sql, (err, res) => {
+    db.query(sql, (err, res) => {
       if (err) {
         return console.error(err.message);
       } else {
@@ -92,7 +92,7 @@ const getDevelopersWithAllInfo = () => {
       JOIN proficiencies
       ON developers_skills.proficiency_id = proficiencies.proficiency_id`;
 
-    db.all(sql, (err, res) => {
+    db.query(sql, (err, res) => {
       if (err) {
         return console.error(err.message);
       } else {
@@ -132,7 +132,7 @@ const getTeamLeads = () => {
   return new Promise(resolve => {
     let sql = 'SELECT * FROM team_leads';
 
-    db.all(sql, (err, res) => {
+    db.query(sql, (err, res) => {
       if (err) {
         return console.error(err.message);
       } else {
@@ -154,7 +154,7 @@ const getLoggedInTeamLead = (githubUsername) => {
   return new Promise(resolve => {
     let sql = `SELECT * FROM team_leads WHERE github_username = \"${githubUsername}\"`;
 
-    db.all(sql, (err, res) => {
+    db.query(sql, (err, res) => {
       if (err) {
         return console.error(err.message);
       } else {
@@ -183,7 +183,7 @@ const getTeams = () => {
   return new Promise(resolve => {
     let sql = 'SELECT * FROM teams';
 
-    db.all(sql, (err, res) => {
+    db.query(sql, (err, res) => {
       if (err) {
         return console.error(err.message);
       } else {
@@ -205,7 +205,7 @@ const getDevelopersSkills = () => {
   return new Promise(resolve => {
     let sql = 'SELECT * FROM developers_skills';
 
-    db.all(sql, (err, res) => {
+    db.query(sql, (err, res) => {
       if (err) {
         return console.error(err.message);
       } else {
@@ -227,7 +227,7 @@ const getRequests = () => {
   return new Promise(resolve => {
     let sql = 'SELECT * FROM requests';
 
-    db.all(sql, (err, res) => {
+    db.query(sql, (err, res) => {
       if (err) {
         return console.error(err.message);
       } else {
@@ -262,7 +262,7 @@ const createRequest = ({
       request_status)
       VALUES (${developerId}, ${teamLeadId}, \"${startDate}\", \"${endDate}\", ${amountOfHours}, \"${requestStatus}\")`;
 
-  db.run(
+  db.query(
     sql,
     function (err) {
       if (err) {
@@ -280,7 +280,7 @@ const updateRequestStatus = ({
 
   let sql = `UPDATE requests SET request_status = \"${requestStatus}\" WHERE request_id = ${requestId}`;
 
-  db.run(
+  db.query(
     sql,
     function (err) {
       if (err) {
@@ -293,7 +293,7 @@ const updateRequestStatus = ({
 
     sql = `UPDATE developers SET available = false WHERE developer_id = ${developerId}`;
 
-    db.run(
+    db.query(
       sql,
       function (err) {
         if (err) {
@@ -307,7 +307,7 @@ const updateRequestStatus = ({
 
     sql = `UPDATE developers SET available = true WHERE developer_id = ${developerId}`;
 
-    db.run(
+    db.query(
       sql,
       function (err) {
         if (err) {
@@ -321,7 +321,7 @@ const updateRequestStatus = ({
 
     sql = `UPDATE developers SET available = true WHERE developer_id = ${developerId}`;
 
-    db.run(
+    db.query(
       sql,
       function (err) {
         if (err) {
@@ -334,7 +334,7 @@ const updateRequestStatus = ({
 
 const closeDatabase = () => {
 
-  db.close((err) => {
+  db.end((err) => {
     if (err) {
       console.error(err.message);
     }
