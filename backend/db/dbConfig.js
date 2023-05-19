@@ -1,6 +1,6 @@
-var mysql = require('mysql');
+let mysql = require('mysql');
 
-var db = mysql.createConnection({
+let db = mysql.createConnection({
   host: "rent-a-dev-mydb-mlm8gyowdhvd.cdpckwejswol.us-east-1.rds.amazonaws.com",
   port: 3306,
   user: "admin",
