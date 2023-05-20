@@ -33,7 +33,16 @@
     </ul>
   </details>
 
-  <button class="cardButton" onclick="alert('Coming Soon!')">
-    Request
-  </button>
+  <form action="/requests/add" method="post">
+    <input type="text" name="developerId" id="developerId" value="<%= dev.developerId %>" hidden />
+    <input type="text" name="teamLeadId" id="teamLeadId" value="<%= dev.teamLeadId %>" hidden />
+    <input type="date" name="startDate" id="startDate" value="<%= new Date() %>" hidden />
+    <input type="date" name="endDate" id="endDate" value="<%= new Date() %>" hidden />
+    <input type="number" name="amountOfHours" id="amountOfHours" value="5" hidden />
+    <input type="text" name="requestStatus" id="requestStatus" value="Pending" hidden />
+
+    <button class="cardButton" type="submit">
+      Request
+    </button>
+  </form>
 </article>

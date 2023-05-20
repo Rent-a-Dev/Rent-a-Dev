@@ -269,17 +269,15 @@ const createRequest = async ({
       end_date,
       amount_of_hours,
       request_status)
-      VALUES (${developerId}, ${teamLeadId}, \"${startDate}\", \"${endDate}\", ${amountOfHours}, \"${requestStatus}\")`;
+      VALUES (${developerId}, ${teamLeadId}, "${startDate}", "${endDate}", ${amountOfHours}, "${requestStatus}")`;
 
-  db.query(
-    sql,
-    function (err) {
-      if (err) {
-        throw err;
-      }
+  try {
 
-      return;
-    });
+    db.query(sql);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 const updateRequestStatus = async ({
