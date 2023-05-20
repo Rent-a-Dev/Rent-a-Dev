@@ -63,16 +63,31 @@ app.get('/teamLead/loggedIn/:githubUsername', function (req, res) {
   });
 });
 
-app.post('/requests/create', function (req, res) {
-  createRequest(req.body);
+app.post('/requests/add', function (req, res) {
+  try {
+    createRequest(req.body);
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(406).send(error)
+  }
 });
 
 app.post('/developers/add', function (req, res) {
-  insertNewDeveloper(req.body);
+  try {
+    insertNewDeveloper(req.body);
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(406).send(error);
+  }
 });
 
 app.put('/requests/update', function (req, res) {
-  updateRequestStatus(req.body);
+  try {
+    updateRequestStatus(req.body);
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(406).send(error);
+  }
 });
 
 const server = app.listen(process.env.PORT || 8080, function () {

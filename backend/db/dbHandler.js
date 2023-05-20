@@ -1,12 +1,15 @@
 const { db } = require('./dbConfig.js');
 const { requestStatuses } = require('../enums/requests.js');
 
-const insertNewDeveloper = ({
+const insertNewDeveloper = async ({
   firstName,
   lastName,
   available,
   teamId,
 }) => {
+  if (typeof firstName === undefined || typeof lastName === undefined || typeof available === undefined || typeof teamId === undefined) {
+    throw new Error('Values cannot be undefined')
+  }
 
   let sql = `INSERT INTO developers (
       first_name,
@@ -15,18 +18,18 @@ const insertNewDeveloper = ({
       team_id)
       VALUES (\"${firstName}\", \"${lastName}\", ${available}, ${teamId})`;
 
-  db.query(
+  db.query
     sql,
     function (err) {
       if (err) {
-        return console.log(err.message);
+        throw err;
       }
-      console.log('Record inserted');
+      
+      return;
     });
-
 };
 
-const getDevelopers = () => {
+const getDevelopers = async () => {
 
   return new Promise(resolve => {
     let sql = 'SELECT * FROM developers';
@@ -48,7 +51,7 @@ const getDevelopers = () => {
     });
 };
 
-const getDevelopersWithTeamInfo = () => {
+const getDevelopersWithTeamInfo = async () => {
 
   return new Promise(resolve => {
 
@@ -79,7 +82,7 @@ const getDevelopersWithTeamInfo = () => {
     });
 };
 
-const getDevelopersWithAllInfo = () => {
+const getDevelopersWithAllInfo = async () => {
 
   return new Promise(resolve => {
 
@@ -127,7 +130,7 @@ const getDevelopersWithAllInfo = () => {
     });
 };
 
-const getTeamLeads = () => {
+const getTeamLeads = async () => {
 
   return new Promise(resolve => {
     let sql = 'SELECT * FROM team_leads';
@@ -149,7 +152,7 @@ const getTeamLeads = () => {
     });
 };
 
-const getLoggedInTeamLead = (githubUsername) => {
+const getLoggedInTeamLead = async (githubUsername) => {
 
   return new Promise(resolve => {
     let sql = `SELECT * FROM team_leads WHERE github_username = \"${githubUsername}\"`;
@@ -178,7 +181,7 @@ const getLoggedInTeamLead = (githubUsername) => {
     });
 };
 
-const getTeams = () => {
+const getTeams = async () => {
 
   return new Promise(resolve => {
     let sql = 'SELECT * FROM teams';
@@ -200,7 +203,7 @@ const getTeams = () => {
     });
 };
 
-const getDevelopersSkills = () => {
+const getDevelopersSkills = async () => {
 
   return new Promise(resolve => {
     let sql = 'SELECT * FROM developers_skills';
@@ -222,7 +225,7 @@ const getDevelopersSkills = () => {
     });
 };
 
-const getRequests = () => {
+const getRequests = async () => {
 
   return new Promise(resolve => {
     let sql = 'SELECT * FROM requests';
@@ -244,7 +247,7 @@ const getRequests = () => {
     });
 };
 
-const createRequest = ({
+const createRequest = async ({
   developerId,
   teamLeadId,
   startDate,
@@ -252,6 +255,12 @@ const createRequest = ({
   amountOfHours,
   requestStatus,
 }) => {
+
+  if (typeof developerId === undefined || typeof teamLeadId === undefined || typeof startDate === undefined 
+    || typeof endDate === undefined || typeof amountOfHours === undefined || typeof requestStatus === undefined) {
+    
+    throw new Error('Values cannot be undefined');
+  }
 
   let sql = `INSERT INTO requests (
       developer_id,
@@ -266,17 +275,23 @@ const createRequest = ({
     sql,
     function (err) {
       if (err) {
-        return console.log(err.message);
+        throw err;
       }
-      console.log('Record inserted');
+
+      return;
     });
 };
 
-const updateRequestStatus = ({
+const updateRequestStatus = async ({
   requestId,
   developerId,
   requestStatus,
 }) => {
+
+  if (typeof requestId === undefined || typeof developerId === undefined || typeof requestStatus === undefined) {
+
+    throw new Error('Values cannot be undefined');
+  }
 
   let sql = `UPDATE requests SET request_status = \"${requestStatus}\" WHERE request_id = ${requestId}`;
 
@@ -284,9 +299,8 @@ const updateRequestStatus = ({
     sql,
     function (err) {
       if (err) {
-        return console.log(err.message);
+        throw err;
       }
-      console.log('Record updated');
     });
 
   if (requestStatus === requestStatuses.Accepted) {
@@ -297,9 +311,9 @@ const updateRequestStatus = ({
       sql,
       function (err) {
         if (err) {
-          return console.log(err.message);
+          throw err;
         }
-        console.log('Record updated');
+        return;
       });
   }
 
@@ -311,9 +325,9 @@ const updateRequestStatus = ({
       sql,
       function (err) {
         if (err) {
-          return console.log(err.message);
+          return err;
         }
-        console.log('Record updated');
+        return;
       });
   }
 
@@ -325,9 +339,9 @@ const updateRequestStatus = ({
       sql,
       function (err) {
         if (err) {
-          return console.log(err.message);
+          return err;
         }
-        console.log('Record updated');
+        return;
       });
   }
 };
