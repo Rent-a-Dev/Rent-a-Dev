@@ -18,7 +18,7 @@ const insertNewDeveloper = async ({
       team_id)
       VALUES (\"${firstName}\", \"${lastName}\", ${available}, ${teamId})`;
 
-  db.query
+  db.query(
     sql,
     function (err) {
       if (err) {
