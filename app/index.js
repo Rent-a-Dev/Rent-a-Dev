@@ -23,17 +23,15 @@ const get = async url => {
   }
 };
 
-const requests = [
-  { id: 0, name: 'James', teamLead: 'Anne', requestStatus: 'Pending', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03' },
-  { id: 1, name: 'James', teamLead: 'Anne', requestStatus: 'Approved', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03' },
-  { id: 2, name: 'James', teamLead: 'Anne', requestStatus: 'Rejected', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03' },
-];
 
-app.get('/viewRequests', function (req, res) {
+
+app.get('/viewRequests', async function (req, res) {
+  const requests = await get('requests/all');
   res.render('pages/viewRequests', { data: requests });
 });
 
-app.get('/approveRequests', function (req, res) {
+app.get('/approveRequests', async function (req, res) {
+  const requests = await get('requests/all');
   res.render('pages/approveRequests', { data: requests });
 });
 
