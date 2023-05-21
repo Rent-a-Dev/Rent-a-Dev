@@ -1,4 +1,11 @@
 require('dotenv').config();
+const { 
+  populateSearchAndFilter, 
+  searchData, 
+  filterDataLead, 
+  filterDataTeam,
+  filterDataSkills
+} = require('./public/js/Helpers/SearchAndFiltering.js');
 const express = require('express');
 const app = express();
 const port = process.env.PORT;
@@ -23,6 +30,11 @@ const get = async url => {
   }
 };
 
+const authFunc = async () => {
+  const authResponse = await fetch("https://github.com/login/oauth/authorize")
+  return authResponse;
+}
+
 const requests = [
   { id: 0, name: 'James', teamLead: 'Anne', requestStatus: 'Pending', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03' },
   { id: 1, name: 'James', teamLead: 'Anne', requestStatus: 'Approved', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03' },
@@ -38,19 +50,63 @@ app.get('/approveRequests', function (req, res) {
 });
 
 app.get('/viewDevs', async function (req, res) {
-  const developers = await get('developers/all');
-  res.render('pages/viewDevs', { data: developers || [] });
+  let developers = await get('developers/all');
+
+  let populateFilter = populateSearchAndFilter(developers);
+
+  if(req.query?.searchInput){
+    developers = searchData(developers, req.query.searchInput); 
+  }
+
+  if(req.query?.TeamFilter){
+    developers = filterDataTeam(developers, req.query?.TeamFilter);
+  }
+  
+  if(req.query?.LeadFilter){
+    developers = filterDataLead(developers, req.query?.LeadFilter);
+  }
+
+  if(req.query?.SkillsFilter){
+    developers = filterDataSkills(developers, req.query?.SkillsFilter);
+  }
+  res.render('pages/viewDevs', { data: developers || [], populateFilter: populateFilter });
 });
 
-app.get('/manageDevs', function (req, res) {
-  res.render('pages/manageDevs', { data: developers });
+app.get('/manageDevs', async function (req, res) {
+  // authFunc(); 
+
+  let developers = await get('developers/all');
+
+  let populateFilter = populateSearchAndFilter(developers);
+
+  if(req.query?.searchInput){
+    developers = searchData(developers, req.query.searchInput); 
+  }
+
+  if(req.query?.TeamFilter){
+    developers = filterDataTeam(developers, req.query?.TeamFilter);
+  }
+  
+  if(req.query?.LeadFilter){
+    developers = filterDataLead(developers, req.query?.LeadFilter);
+  }
+  
+  if(req.query?.SkillsFilter){
+    developers = filterDataSkills(developers, req.query?.SkillsFilter);
+  }
+  res.render('pages/manageDevs', { data: developers, populateFilter: populateFilter });
 });
 
 app.get('/', function (req, res) {
   res.render('pages/index');
 });
 
+app.post('/manageDevs/add', function(req, res) {
+  res.redirect('/manageDevs');
+});
 
 app.listen(port, function (req, res) {
   console.log(`App listening at port ${port}`);
 });
+
+ 

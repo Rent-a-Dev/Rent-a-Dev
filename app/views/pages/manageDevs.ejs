@@ -3,7 +3,7 @@
   <link rel="stylesheet" href="css/viewDevs.css">
   <main id="ViewDevs">
 
-    <%- include('../partials/searchAndFilter',{requestsPage: false})%>
+    <%- include('../partials/searchAndFilter',{requestsPage: false, populateFilter})%>
       <section class="devCardContainer">
         <% for( let index=0; index < data.length; index++ ) { %>
           <%- include('../partials/devCard.ejs', {dev: data[index]}) %>

@@ -3,58 +3,79 @@
 
 <section class="Search-And-Filter">
   <h2>Search by Name:</h2>
-  <input type="search" />
+  <form class="searchArticle" action="<%if(requestsPage) {%> /viewDevs <%} else {%> /manageDevs <%}%>" method="GET">
+
+    <input type="search" name="searchInput" />
+    <button type="submit">Search</button>
+  </form>
   <h2>Filters</h2>
 
-  <article class="filters">
-    <% if(requestsPage) { %>
-      <article>
-        <label for="TeamFilter">Team:</label>
-        <select name="TeamFilter" id="TeamFilter">
-          <option value="Anne">Anne</option>
-        </select>
-      </article>
-      <article>
-        <label for="LeadFilter">Lead:</label>
-        <select name="LeadFilter" id="LeadFilter">
-          <option value="Anne">Jarred</option>
-        </select>
-      </article>
-      
-    <% } %>
+  <form class="filters" action="<%if(requestsPage) {%> /viewDevs <%} else {%> /manageDevs <%}%>" method="GET">
+      <% if(requestsPage) { %>
+        <article>
+          <label for="TeamFilter">Team:</label>
+          <select name="TeamFilter" id="TeamFilter">
+              <option></option>
+            <% for( let index=0; index < populateFilter.teams.length; index++ ) { %>
+                <option value="<%=populateFilter.teams[index]%>"><%=populateFilter.teams[index]%></option>
+                <% } %>
+          </select>
+        </article>
+        <article>
+          <label for="LeadFilter">Lead:</label>
+          <select name="LeadFilter" id="LeadFilter">
+            <option></option>
+            <% for( let index=0; index < populateFilter.leads.length; index++ ) { %>
+              <option value="<%=populateFilter.leads[index]%>"><%=populateFilter.leads[index]%></option>
+              <% } %>
+          </select>
+        </article>
+        <% } %>
         
         <article>
           <label for="SkillsFilter">Skills:</label>
           <select name="SkillsFilter" id="SkillsFilter">
-            <option value="Anne">Java</option>
-            
+            <option></option>
+            <% for( let index=0; index < populateFilter.skills.length; index++ ) { %>
+              <option value="<%=populateFilter.skills[index]%>"><%=populateFilter.skills[index]%></option>
+              <% } %>            
           </select>
         </article>
-  </article>
+        <button type="submit">Filter</button>
+    </form>
 
   <% if(!requestsPage) { %>
-    <details class="add-dev-details">
-      <summary>
-        <h2>Add a New Dev</h2>
-      </summary>
-      <article class="inputDetails">
-        <label for="nameInput">Name:</label>
-        <input type="text" name="nameInput" id="nameInput" />
-
-        <label for="surnameInput">Surname:</label>
-        <input type="text" name="surnameInput" id="surnameInput" />
-
-        <label for="teamInput">Team:</label>
-        <input type="text" name="teamInput" id="teamInput" />
-
-        <label for="skillsInput">Skills:</label>
-        <select name="skillsInput" id="skillsInput" multiple>
-          <option value="Java">Java</option>
-          <option value="C#">C#</option>
-        </select>
-      </article>
-
-      <button id="AddDevButton" onclick="addDevSubmit()">Add Dev</button>
-    </details>
+    <form action="/manageDevs/add" method="POST">
+      <details class="add-dev-details">
+        <summary>
+          <h2>Add a New Dev</h2>
+        </summary>
+        <article class="inputDetails">
+          <article>
+            <label for="nameInput">Name:</label>
+            <input type="text" name="nameInput" id="nameInput" />
+          </article>
+  
+          <article>
+            <label for="surnameInput">Surname:</label>
+            <input type="text" name="surnameInput" id="surnameInput" />
+          </article>
+  
+          <article>
+            <label for="teamInput">Team:</label>
+            <input type="text" name="teamInput" id="teamInput" />
+          </article>
+          <article>
+            <label for="skillsInput">Skills:</label>
+            <select name="skillsInput" id="skillsInput" multiple>
+              <option value="Java">Java</option>
+              <option value="C#">C#</option>
+            </select>
+          </article>
+        </article>
+  
+        <button type="submit" id="AddDevButton">Add Dev</button>
+      </details>
+    </form>
     <% } %>
 </section>
