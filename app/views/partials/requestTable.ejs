@@ -19,23 +19,23 @@
     <% data.forEach((row)=> {%>
       <tr>
         <td>
-          <%= row.name%>
+          <%= row.devFirstName%> <%= row.devLastName%> 
         </td>
         <td>
-          <%= row.teamLead%>
+          <%= row.leadFirstName%> <%= row.leadLastName%>
         </td>
         <td>
           <details>
             <summary>
               See availability
             </summary>
-              <p>Hours: <%= row.hours%> <br/><br/> <%= row.startDate%> - <%= row.endDate%></p>
+              <p>Hours: <%= row.amountOfHours%> <br/><br/> <%= row.startDate%> - <%= row.endDate%></p>
           </details>
         </td>
         <% if (isApproveRequests) { %>
           <td class="availabilityColumn">
-            <button class="approveBtn" onclick="approveRequest(`<%=row.id%>`)">Approve</button>
-            <button class="rejectBtn" onclick="rejectRequest(`<%=row.id%>`)">Reject</button>
+            <button class="approveBtn" onclick="approveRequest(`<%=row.requestId%>`)">Approve</button>
+            <button class="rejectBtn" onclick="rejectRequest(`<%=row.requestId%>`)">Reject</button>
           </td>
         <% } %>
         <td>
