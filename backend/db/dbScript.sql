@@ -22,6 +22,8 @@ CREATE TABLE developers (
   FOREIGN KEY (team_id) REFERENCES teams (team_id)
 );
 
+ALTER TABLE developers ALTER available SET DEFAULT true;
+
 CREATE TABLE skills (
   skill_id INT PRIMARY KEY AUTO_INCREMENT,
   skill VARCHAR(255) NOT NULL
@@ -53,6 +55,8 @@ CREATE TABLE requests (
   FOREIGN KEY (developer_id) REFERENCES developers (developer_id),
   FOREIGN KEY (team_lead_id) REFERENCES team_leads (team_lead_id)
 );
+
+ALTER TABLE requests ALTER request_status SET DEFAULT "Pending";
 
 --Adding mock data
 INSERT INTO team_leads (first_name, last_name, github_username)

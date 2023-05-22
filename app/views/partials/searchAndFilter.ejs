@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="css/searchFilter.css" type="text/css">  
-<script src="js/search.js"></script>
 
 <section class="Search-And-Filter">
   <h2>Search by Name:</h2>
@@ -16,18 +15,22 @@
           <label for="TeamFilter">Team:</label>
           <select name="TeamFilter" id="TeamFilter">
               <option></option>
+              <% if (populateFilter.teams) {%>
             <% for( let index=0; index < populateFilter.teams.length; index++ ) { %>
                 <option value="<%=populateFilter.teams[index]%>"><%=populateFilter.teams[index]%></option>
                 <% } %>
+                <%}%>
           </select>
         </article>
         <article>
           <label for="LeadFilter">Lead:</label>
           <select name="LeadFilter" id="LeadFilter">
             <option></option>
-            <% for( let index=0; index < populateFilter.leads.length; index++ ) { %>
-              <option value="<%=populateFilter.leads[index]%>"><%=populateFilter.leads[index]%></option>
-              <% } %>
+            <% if (populateFilter.leads) {%>
+              <% for( let index=0; index < populateFilter.leads.length; index++ ) { %>
+                <option value="<%=populateFilter.leads[index]%>"><%=populateFilter.leads[index]%></option>
+                <% } %>
+            <%}%>
           </select>
         </article>
         <% } %>
@@ -36,9 +39,11 @@
           <label for="SkillsFilter">Skills:</label>
           <select name="SkillsFilter" id="SkillsFilter">
             <option></option>
+            <% if (populateFilter.skills) {%>
             <% for( let index=0; index < populateFilter.skills.length; index++ ) { %>
               <option value="<%=populateFilter.skills[index]%>"><%=populateFilter.skills[index]%></option>
-              <% } %>            
+              <% } %> 
+              <%}%>           
           </select>
         </article>
         <button type="submit">Filter</button>
@@ -68,13 +73,16 @@
           <article>
             <label for="skillsInput">Skills:</label>
             <select name="skillsInput" id="skillsInput" multiple>
-              <option value="Java">Java</option>
-              <option value="C#">C#</option>
+              <% if (populateFilter.skillInputData) {%>
+                <% for( let index=0; index < populateFilter.skillInputData.length; index++ ) { %>
+                  <option value="<%=populateFilter.skillInputData[index]%>"><%=populateFilter.skillInputData[index]%></option>
+                  <% } %> 
+                  <%}%>    
             </select>
           </article>
         </article>
   
-        <button type="submit" id="AddDevButton">Add Dev</button>
+        <button type="submit">Add Dev</button>
       </details>
     </form>
     <% } %>

@@ -2,7 +2,9 @@
 
   <link rel="stylesheet" href="css/viewDevs.css">
   <main id="ViewDevs">
-
+    <% if(errorFlag) {%>
+      <%- include('../partials/failPopUp',{myLabel: 'error'})%>
+    <%}%>
     <%- include('../partials/searchAndFilter',{requestsPage: false, populateFilter})%>
       <section class="devCardContainer">
         <% for( let index=0; index < data.length; index++ ) { %>

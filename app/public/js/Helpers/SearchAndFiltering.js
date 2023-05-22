@@ -1,11 +1,25 @@
-const populateSearchAndFilter = (data) => {
-  const teamNames = Array.from(new Set(data.map(item => {return item.teamName})));
-  const leadNames = Array.from(new Set(data.map(item => {return `${item.teamLeadFirstName} ${item.teamLeadLastName}`})));
-  const skillNames = Array.from(new Set(data.map(item => {return (item.skills).map(item => {return item.skill})}).flat(1)));
+const populateSearchAndFilter = (data, skillsAll) => {
+  const teamNames = Array.from(new Set(data.map(team => {return team.teamName})));
+  const leadNames = Array.from(new Set(data.map(lead => {return `${lead.teamLeadFirstName} ${lead.teamLeadLastName}`})));
+  const skillNames = Array.from(new Set(data.map(skill => {return (skill.skills).map(item => {return item.skill})}).flat(1)));
 
+  let skillsInputData = [];
+  if(skillsAll){
+    skillsInputData = skillsAll.skillNames.map(skill => {
+  
+      let skillWithProficiencies = [];
+      skillsAll.proficiencyNames.forEach(element => {
+        skillWithProficiencies.push(`${skill.skill} ${element.proficiency}`);
+      });
+    
+      return skillWithProficiencies;
+    });
+  }
+  
   return {teams: teamNames,
           leads: leadNames,
-          skills: skillNames};
+          skills: skillNames,
+          skillInputData: skillsInputData.flat(1)};
 };
 
 const searchData =(data, searchParam) => {
