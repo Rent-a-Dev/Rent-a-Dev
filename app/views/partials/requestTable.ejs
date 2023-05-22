@@ -5,9 +5,9 @@
     <tr id="headings">
       <th>Name</th>
       <% if (isApproveRequests) { %>
-        <th>Team Lead</th>
+        <th>Requested By </th>
       <% } else { %>
-        <th> Requested By </th>
+        <th>Team Lead</th>
       <% } %>
       <th>Requested availability</th>
       <% if (isApproveRequests) { %>
@@ -21,9 +21,15 @@
         <td>
           <%= row.devFirstName%> <%= row.devLastName%> 
         </td>
-        <td>
-          <%= row.leadFirstName%> <%= row.leadLastName%>
-        </td>
+        <% if (isApproveRequests) { %>
+          <td>
+            <%= row.leadRequestFirstName%> <%= row.leadRequestLastName%>
+          </td>
+        <% } else { %>
+          <td>
+            <%= row.leadFirstName%> <%= row.leadLastName%>
+          </td>
+        <% } %>
         <td>
           <details>
             <summary>
@@ -34,8 +40,18 @@
         </td>
         <% if (isApproveRequests) { %>
           <td class="availabilityColumn">
-            <button class="approveBtn" onclick="approveRequest(`<%=row.requestId%>`)">Approve</button>
-            <button class="rejectBtn" onclick="rejectRequest(`<%=row.requestId%>`)">Reject</button>
+            <form action="/requests/update" method="post">
+              <input type="text" name="requestId" id="requestId" value="<%=row.requestId%>" hidden />
+              <input type="text" name="developerId" id="developerId" value="<%=row.developerId%>" hidden />
+              <input type="text" name="requestStatus" id="requestStatus" value="Accepted" hidden />
+              <button class="approveBtn" type="submit">Approve</button>
+            </form>
+            <form action="/requests/update" method="post">
+              <input type="text" name="requestId" id="requestId" value="<%=row.requestId%>" hidden />
+              <input type="text" name="developerId" id="developerId" value="<%=row.developerId%>" hidden />
+              <input type="text" name="requestStatus" id="requestStatus" value="Denied" hidden />
+              <button class="rejectBtn" type="submit">Reject</button>
+            </form>
           </td>
         <% } %>
         <td>
