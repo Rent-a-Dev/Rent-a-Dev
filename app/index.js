@@ -5,6 +5,8 @@ const port = process.env.PORT;
 
 app.set('view engine', 'ejs');
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 const get = async url => {
@@ -23,7 +25,21 @@ const get = async url => {
   }
 };
 
+const put = async (url, body) => {
+  try {
+    const response = await fetch(`${process.env.API}/${url}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
 
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 app.get('/viewRequests', async function (req, res) {
   const requests = await get('requests/all');
@@ -48,6 +64,16 @@ app.get('/', function (req, res) {
   res.render('pages/index');
 });
 
+app.post('/requests/update', async (req, res) => {
+  let response = await put('requests/update', req.body);
+  if (response.status === 200) {
+    console.log('Request Successful');
+  } else {
+    console.log('Request Unsuccessful');
+  }
+
+  res.redirect('/approveRequests');
+});
 
 app.listen(port, function (req, res) {
   console.log(`App listening at port ${port}`);

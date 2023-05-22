@@ -386,12 +386,18 @@ const getRequestsWithNames = async () => {
 
   return new Promise(resolve => {
     let sql = `SELECT r.request_id, r.developer_id, r.team_lead_id, r.start_date, r.end_date, r.amount_of_hours, r.request_status, 
-    d.first_name AS devFirstName, d.last_name AS devLastName, tl.first_name AS leadFirstName, tl.last_name AS leadLastName 
+    d.first_name AS devFirstName, d.last_name AS devLastName, tl.first_name AS leadRequestFirstName, tl.last_name AS leadRequestLastName,
+    tlb.first_name AS leadFirstName, tlb.last_name AS leadLastName 
     FROM requests r 
     JOIN developers d 
-    ON r.developer_id = d.developer_id 
+    ON r.developer_id = d.developer_id
+    JOIN teams t ON
+    d.team_id = t.team_id
+    JOIN team_leads tlb
+    ON t.team_lead_id = tlb.team_lead_id
     JOIN team_leads tl 
-    ON r.team_lead_id = tl.team_lead_id`;
+    ON r.team_lead_id = tl.team_lead_id
+     `;
 
     db.query(sql, (err, res) => {
       if (err) {
@@ -612,6 +618,8 @@ const mapRequestsAll = (requests) => {
       devLastName: req.devLastName,
       leadFirstName: req.leadFirstName,
       leadLastName: req.leadLastName,
+      leadRequestFirstName: req.leadRequestFirstName, 
+      leadRequestLastName: req.leadRequestLastName,
     });
   }
 
