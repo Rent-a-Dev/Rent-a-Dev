@@ -1,6 +1,5 @@
 
-const addDevBody = async(name, surname, teamInput, skillsInput) =>{
-  const allTeams = await get('teams');
+const addDevBody = async(name, surname, teamInput, skillsInput, allTeams) =>{
   let skills = [];
   let proficiencyNames = [];
   let skillArray = [];

@@ -116,7 +116,9 @@ app.post('/manageDevs/add', async function(req, res) {
     // res.render('pages/manageDevs', { data: [], populateFilter: [], errorFlag: true});
     // Need to render a popup failure here.
   }
-  const body = await addDevBody(req.body.nameInput, req.body.surnameInput, req.body.teamInput, req.body.skillsInput)
+  const allTeams = await get('teams');
+  const body = await addDevBody(req.body.nameInput, req.body.surnameInput, req.body.teamInput, req.body.skillsInput, allTeams);
+  
   console.log(body);
   // call the appropriate post function to /developers/add
   const insertResponse = await post('developers/add', body);
