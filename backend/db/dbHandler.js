@@ -58,7 +58,7 @@ const insertNewDeveloper = async ({
 
 const getLastIdForDevelopers = async () => {
   return new Promise(resolve => {
-    let sql = `SELECT LAST_INSERT_ID() AS ID FROM developers`;
+    let sql = `SELECT developer_id FROM developers ORDER BY developer_id DESC LIMIT 1`;
 
     db.query(sql, (err, res) => {
       if (err) {
@@ -70,7 +70,7 @@ const getLastIdForDevelopers = async () => {
     );
   })
     .then((res) => {
-      return res[0].ID;
+      return res[0].developer_id;
     })
     .catch((err) => {
       return err;
