@@ -337,6 +337,50 @@ const getRequests = async () => {
     });
 };
 
+const getSkills = async () => {
+
+  return new Promise(resolve => {
+    let sql = 'SELECT * FROM skills';
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then((res) => {
+      return mapSKills(res);
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
+const getProficiencies = async () => {
+
+  return new Promise(resolve => {
+    let sql = 'SELECT * FROM skills';
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then((res) => {
+      return mapProficiencies(res);
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
 
 const getRequestsWithNames = async () => {
 
@@ -621,6 +665,35 @@ const mapTeams = (teams) => {
   return mappedTeams;
 };
 
+const mapSKills = (skills) => {
+
+  let mappedSkills = [];
+
+  for (const skill of skills) {
+
+    mappedSkills.push({
+      skillId: skill.skill_id,
+      skill: skill.skill,
+    });
+  }
+
+  return mappedSkills;
+};
+
+const mapProficiencies = (proficiencies) => {
+
+  let mappedProficiencies = [];
+
+  for (const proficiency of proficiencies) {
+
+    mappedProficiencies.push({
+      proficiencyId: proficiency.proficiency_id,
+      proficiency: proficiency.proficiency,
+    });
+  }
+
+  return mappedProficiencies;
+};
 module.exports = {
   getDevelopers,
   insertNewDeveloper,
@@ -634,5 +707,7 @@ module.exports = {
   updateRequestStatus,
   getDevelopersWithAllInfo,
   getLoggedInTeamLead,
-  getRequestsWithNames
+  getRequestsWithNames,
+  getSkills,
+  getProficiencies,
 };
