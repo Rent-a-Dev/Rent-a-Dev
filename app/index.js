@@ -11,7 +11,8 @@ const { addDevBody } = require( './public/js/Helpers/addingNewRequest.js' );
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 const get = async url => {
@@ -51,12 +52,21 @@ const authFunc = async () => {
   const authResponse = await fetch("https://github.com/login/oauth/authorize")
   return authResponse;
 }
+const put = async (url, body) => {
+  try {
+    const response = await fetch(`${process.env.API}/${url}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
 
-const requests = [
-  { id: 0, name: 'James', teamLead: 'Anne', requestStatus: 'Pending', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03' },
-  { id: 1, name: 'James', teamLead: 'Anne', requestStatus: 'Approved', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03' },
-  { id: 2, name: 'James', teamLead: 'Anne', requestStatus: 'Rejected', hours: 5, startDate: '2023/05/01', endDate: '2023/05/03' },
-];
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 app.get('/viewRequests', async function (req, res) {
   const requests = await get('requests/all');
@@ -118,10 +128,20 @@ app.post('/manageDevs/add', async function(req, res) {
   res.redirect('/manageDevs');
 });
 
+app.post('/requests/update', async (req, res) => {
+  let response = await put('requests/update', req.body);
+  if (response.status === 200) {
+    console.log('Request Successful');
+  } else {
+    console.log('Request Unsuccessful');
+  }
+
+  res.redirect('/approveRequests');
+});
 
 
 
-app.listen(port, function (req, res) {
+app.listen(3000, function (req, res) {
   console.log(`App listening at port ${port}`);
 });
 
