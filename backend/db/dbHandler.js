@@ -282,11 +282,10 @@ const createRequest = async({
   startDate,
   endDate,
   amountOfHours,
-  requestStatus,
 }) => {
 
-  if (typeof developerId === undefined || typeof teamLeadId === undefined || typeof startDate === undefined 
-    || typeof endDate === undefined || typeof amountOfHours === undefined || typeof requestStatus === undefined) {
+  if (developerId === undefined || teamLeadId === undefined || startDate === undefined 
+    || endDate === undefined || amountOfHours === undefined) {
     
     throw new Error('Values cannot be undefined');
   }
@@ -296,9 +295,8 @@ const createRequest = async({
       team_lead_id,
       start_date,
       end_date,
-      amount_of_hours,
-      request_status)
-      VALUES (${developerId}, ${teamLeadId}, "${startDate}", "${endDate}", ${amountOfHours}, "${requestStatus}")`;
+      amount_of_hours)
+      VALUES (${developerId}, ${teamLeadId}, "${new Date(startDate).toISOString()}", "${new Date(endDate).toISOString()}", ${amountOfHours})`;
 
   try {
 
