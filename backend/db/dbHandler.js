@@ -247,7 +247,36 @@ const getRequests = async () => {
     });
 };
 
-const createRequest = async ({
+
+const getRequestsWithNames = async () => {
+
+  return new Promise(resolve => {
+    let sql = `SELECT r.request_id, r.developer_id, r.team_lead_id, r.start_date, r.end_date, r.amount_of_hours, r.request_status, 
+    d.first_name AS devFirstName, d.last_name AS devLastName, tl.first_name AS leadFirstName, tl.last_name AS leadLastName 
+    FROM requests r 
+    JOIN developers d 
+    ON r.developer_id = d.developer_id 
+    JOIN team_leads tl 
+    ON r.team_lead_id = tl.team_lead_id`;
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then((res) => {
+      return mapRequestsAll(res);
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
+const createRequest = async({
   developerId,
   teamLeadId,
   startDate,
@@ -429,6 +458,30 @@ const mapRequests = (requests) => {
   return mappedRequests;
 };
 
+const mapRequestsAll = (requests) => {
+
+  let mappedRequests = [];
+
+  for (const req of requests) {
+
+    mappedRequests.push({
+      requestId: req.request_id,
+      developerId: req.developer_id,
+      teamLeadId: req.team_lead_id,
+      startDate: (new Date(req.start_date)).toLocaleDateString(),
+      endDate: (new Date(req.end_date)).toLocaleDateString(),
+      amountOfHours: req.amount_of_hours,
+      requestStatus: req.request_status,
+      devFirstName: req.devFirstName,
+      devLastName: req.devLastName,
+      leadFirstName: req.leadFirstName,
+      leadLastName: req.leadLastName,
+    });
+  }
+
+  return mappedRequests;
+};
+
 const mapDevSkills = (devSkills) => {
 
   let mappedDevSkills = [];
@@ -489,4 +542,5 @@ module.exports = {
   updateRequestStatus,
   getDevelopersWithAllInfo,
   getLoggedInTeamLead,
+  getRequestsWithNames
 };

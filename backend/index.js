@@ -10,6 +10,7 @@ const {
   closeDatabase,
   updateRequestStatus,
   getDevelopersWithAllInfo,
+  getRequestsWithNames,
 } = require('./db/dbHandler.js');
 
 const express = require('express');
@@ -35,6 +36,12 @@ app.get('/developers/skills', function (req, res) {
 
 app.get('/requests', function (req, res) {
   getRequests().then(data => {
+    res.send(data);
+  });
+});
+
+app.get('/requests/all', function (req, res) {
+  getRequestsWithNames().then(data => {
     res.send(data);
   });
 });
