@@ -1,15 +1,13 @@
 require('dotenv').config();
 const { 
   populateSearchAndFilter, 
-  searchData, 
-  filterDataLead, 
-  filterDataTeam,
-  filterDataSkills
+  filteringCheck
 } = require('./public/js/Helpers/SearchAndFiltering.js');
 const express = require('express');
 const app = express();
 const port = process.env.PORT;
 const bodyParser = require("body-parser");
+const { addDevBody } = require( './public/js/Helpers/addingNewRequest.js' );
 
 app.set('view engine', 'ejs');
 
@@ -108,7 +106,7 @@ app.post('/manageDevs/add', async function(req, res) {
     // res.render('pages/manageDevs', { data: [], populateFilter: [], errorFlag: true});
     // Need to render a popup failure here.
   }
-  const body = await getAddDevBody(req.body.nameInput, req.body.surnameInput, req.body.teamInput, req.body.skillsInput)
+  const body = await addDevBody(req.body.nameInput, req.body.surnameInput, req.body.teamInput, req.body.skillsInput)
   console.log(body);
   // call the appropriate post function to /developers/add
   const insertResponse = await post('developers/add', body);
@@ -120,62 +118,7 @@ app.post('/manageDevs/add', async function(req, res) {
   res.redirect('/manageDevs');
 });
 
-function filteringCheck(req,developers) {
-  
-  if(req.query?.searchInput){
-    developers = searchData(developers, req.query.searchInput); 
-  }
 
-  if(req.query?.TeamFilter){
-    developers = filterDataTeam(developers, req.query?.TeamFilter);
-  }
-  
-  if(req.query?.LeadFilter){
-    developers = filterDataLead(developers, req.query?.LeadFilter);
-  }
-  
-  if(req.query?.SkillsFilter){
-    developers = filterDataSkills(developers, req.query?.SkillsFilter);
-  }
-
-  return developers;
-};
-
-async function getAddDevBody(name, surname, teamInput, skillsInput){
-  const allTeams = await get('teams');
-  let skills = [];
-  let proficiencyNames = [];
-  let skillArray = [];
-
-  if(Array.isArray(skillsInput)){
-    skills = skillsInput.map(item => {return item.split(" ")[0]});
-    proficiencyNames = skillsInput.map(item => {return item.split(" ")[1]});
-    skillArray = skills.map((skill, index) => {
-
-      return {skillName: skill, proficiency: proficiencyNames[index]};
-    })
-  
-  } else{
-    skills = skillsInput.split(" ")[0];
-    proficiencyNames = skillsInput.split(" ")[1];
-    skillArray = [{skillName: skills, proficiency: proficiencyNames}];
-  }
-
-  if(!allTeams) {
-    allTeams = {};
-  }
-
-  let team = allTeams.find(item => item.teamName === teamInput);
-
-  const body = {
-    firstName: name,
-    lastName: surname,
-    available: true, 
-    teamId: team.teamId,
-    skills: skillArray
-  }
-  return body;
-}
 
 
 app.listen(port, function (req, res) {

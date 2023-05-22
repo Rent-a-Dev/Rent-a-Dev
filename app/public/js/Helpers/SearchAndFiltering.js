@@ -15,7 +15,7 @@ const populateSearchAndFilter = (data, skillsAll) => {
       return skillWithProficiencies;
     });
   }
-  
+
   return {teams: teamNames,
           leads: leadNames,
           skills: skillNames,
@@ -62,10 +62,32 @@ const filterDataSkills = (data, filteredParam) => {
   return sortedData;
 }
 
+const filteringCheck = (req,developers) => {
+  
+  if(req.query?.searchInput){
+    developers = searchData(developers, req.query.searchInput); 
+  }
+
+  if(req.query?.TeamFilter){
+    developers = filterDataTeam(developers, req.query?.TeamFilter);
+  }
+  
+  if(req.query?.LeadFilter){
+    developers = filterDataLead(developers, req.query?.LeadFilter);
+  }
+  
+  if(req.query?.SkillsFilter){
+    developers = filterDataSkills(developers, req.query?.SkillsFilter);
+  }
+
+  return developers;
+};
+
 module.exports = {
   populateSearchAndFilter,
   searchData,
   filterDataTeam,
   filterDataLead,
-  filterDataSkills
+  filterDataSkills,
+  filteringCheck
 };
