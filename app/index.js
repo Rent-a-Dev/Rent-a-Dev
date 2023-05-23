@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 
@@ -75,6 +75,6 @@ app.post('/requests/update', async (req, res) => {
   res.redirect('/approveRequests');
 });
 
-app.listen(3000, function (req, res) {
+app.listen(port, function (req, res) {
   console.log(`App listening at port ${port}`);
 });
