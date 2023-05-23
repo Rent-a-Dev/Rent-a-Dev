@@ -6,6 +6,7 @@ const {
 const express = require('express');
 const app = express();
 const port = process.env.PORT;
+const clientId = process.env.CLIENT_ID;
 const bodyParser = require("body-parser");
 const { addDevBody } = require( './public/js/Helpers/addingNewRequest.js' );
 
@@ -102,11 +103,11 @@ app.get('/manageDevs', async function (req, res) {
 
   developers = filteringCheck(req,developers);
   
-  res.render('pages/manageDevs', { data: developers, populateFilter: populateFilter, errorFlag: false});
+  res.render('pages/manageDevs', { data: developers || [], populateFilter: populateFilter, errorFlag: false});
 });
 
 app.get('/', function (req, res) {
-  res.render('pages/index');
+  res.render('pages/login', {clientId: clientId});
 });
 
 app.post('/manageDevs/add', async function(req, res) {
@@ -130,6 +131,50 @@ app.post('/manageDevs/add', async function(req, res) {
   res.redirect('/manageDevs');
 });
 
+app.get('/authenticateUser', async (req, res) => {
+  const body = new URLSearchParams();
+  let access_token;
+  body.append('client_id', clientId );
+  body.append('client_secret', process.env.GIT_SECRET );
+  body.append('code', req?.query?.code);
+  try {
+    const response = await fetch('https://github.com/login/oauth/access_token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+      },
+      body:body
+    });
+
+    const json = await response.json();
+    access_token = json.access_token;
+  } catch (error) {
+    console.log('ERRORS');
+    console.log(error);
+  }
+
+  try {
+    const response = await fetch('https://api.github.com/user', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Bearer ${access_token}`
+      },
+    });
+
+    const json = await response.json();
+    console.log(json);
+  } catch (error) {
+    console.log('ERRORS');
+    console.log(error);
+  }
+  res.redirect('/userCredentials');
+});
+
+app.get('/userCredentials', async (req, res) => {
+  res.redirect('/manageDevs');
+});
 app.post('/requests/update', async (req, res) => {
   let response = await put('requests/update', req.body);
   if (response.status === 200) {

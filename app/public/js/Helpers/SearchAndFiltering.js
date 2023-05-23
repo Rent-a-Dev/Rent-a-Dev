@@ -1,4 +1,10 @@
 const populateSearchAndFilter = (data, skillsAll) => {
+  if(!data){
+    return {teams: [],
+          leads: [],
+          skills: [],
+          skillInputData: []};
+  }
   const teamNames = Array.from(new Set(data.map(team => {return team.teamName})));
   const leadNames = Array.from(new Set(data.map(lead => {return `${lead.teamLeadFirstName} ${lead.teamLeadLastName}`})));
   const skillNames = Array.from(new Set(data.map(skill => {return (skill.skills).map(item => {return item.skill})}).flat(1)));
