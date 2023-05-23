@@ -25,6 +25,22 @@ const get = async url => {
   }
 };
 
+const post = async (url, body) => {
+  try {
+    const response = await fetch(`${process.env.API}/${url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const put = async (url, body) => {
   try {
     const response = await fetch(`${process.env.API}/${url}`, {
@@ -56,12 +72,25 @@ app.get('/viewDevs', async function (req, res) {
   res.render('pages/viewDevs', { data: developers || [] });
 });
 
-app.get('/manageDevs', function (req, res) {
+app.get('/manageDevs', async function (req, res) {
+  const developers = await get('developers/all');
   res.render('pages/manageDevs', { data: developers });
 });
 
 app.get('/', function (req, res) {
   res.render('pages/index');
+});
+
+/* POSTS FOR API CALLS */
+app.post('/requests/add', async (req, res) => {
+  let response = await post('requests/add', req.body);
+  if (response.status === 200) {
+    console.log('Request Successful');
+  } else {
+    console.log('Request Unsuccessful');
+  }
+
+  res.redirect('/viewRequests');
 });
 
 app.post('/requests/update', async (req, res) => {
