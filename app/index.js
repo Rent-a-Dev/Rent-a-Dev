@@ -83,7 +83,7 @@ app.get('/viewRequests', async function (req, res) {
     res.redirect('/');
   }
 
-  const requests = await get(`requests/view?loggedInUser=${req.session.user}`);
+  const requests = await get(`requests/view/${req.session.user}`);
   res.render('pages/viewRequests', { data: requests, username: req.session.user });
 });
 
@@ -92,7 +92,7 @@ app.get('/approveRequests', async function (req, res) {
   if(!req.session.user){
     res.redirect('/');
   }
-  const requests = await get(`requests/approve?loggedInUser=${req.session.user}`);
+  const requests = await get(`requests/approve/${req.session.user}`);
   res.render('pages/approveRequests', { data: requests, username: req.session.user });
 });
 
@@ -102,7 +102,7 @@ app.get('/viewDevs', async function (req, res) {
   if(!req.session.user){
     res.redirect('/');
   }
-  let developers = await get('developers/all');
+  let developers = await get(`developers/view/${req.session.user}`);
 
   let skillsAll = await get('skills/all');
 
@@ -119,7 +119,7 @@ app.get('/manageDevs', async  function (req, res) {
   if(!req.session.user){
     res.redirect('/');
   }
-  let developers = await get('developers/all');
+  let developers = await get(`developers/manage/${req.session.user}`);
 
   let skillsAll = await get('skills/all');
 

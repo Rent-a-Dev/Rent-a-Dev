@@ -15,6 +15,7 @@ const {
   getProficiencies,
   getOwnRequestsWithNames,
   updateAvailability,
+  getOwnDevelopersWithAllInfo
 } = require('./db/dbHandler.js');
 
 const express = require('express');
@@ -44,14 +45,14 @@ app.get('/requests', function (req, res) {
   });
 });
 
-app.get('/requests/view', function (req, res) {
-  getRequestsWithNames(req.query.loggedInUser).then(data => {
+app.get('/requests/view/:loggedInUser', function (req, res) {
+  getRequestsWithNames(req.params.loggedInUser).then(data => {
     res.send(data);
   });
 });
 
-app.get('/requests/approve', function (req, res) {
-  getOwnRequestsWithNames(req.query.loggedInUser).then(data => {
+app.get('/requests/approve/:loggedInUser', function (req, res) {
+  getOwnRequestsWithNames(req.params.loggedInUser).then(data => {
     res.send(data);
   });
 });
@@ -68,8 +69,14 @@ app.get('/teams', function (req, res) {
   });
 });
 
-app.get('/developers/all', function (req, res) {
-  getDevelopersWithAllInfo().then(data => {
+app.get('/developers/view/:loggedInUser', function (req, res) {
+  getDevelopersWithAllInfo(req.params.loggedInUser).then(data => {
+    res.send(data);
+  });
+});
+
+app.get('/developers/manage/:loggedInUser', function (req, res) {
+  getOwnDevelopersWithAllInfo(req.params.loggedInUser).then(data => {
     res.send(data);
   });
 });
