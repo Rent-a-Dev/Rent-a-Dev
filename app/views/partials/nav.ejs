@@ -1,8 +1,10 @@
 <link rel="stylesheet" href="css/Main.css" type="text/css">
 <header>
-  <details>
-    <summary>Username</summary>
-    <button>Log-out</button>
+  <details id="logoutDetail">
+    <summary><%=username%></summary>
+    <form action="/logout" method="GET">
+      <button type="submit">Log-out</button>
+    </form>
   </details>
   <h1 class="MainHeading">
     Rent-a-Dev

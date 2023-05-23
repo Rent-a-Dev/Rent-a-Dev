@@ -50,3 +50,7 @@ button:hover {
 summary {
   cursor: pointer;
 }
+
+#logoutDetail {
+  color: white;
+}

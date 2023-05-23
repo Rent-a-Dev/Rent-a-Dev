@@ -84,7 +84,7 @@ app.get('/viewRequests', async function (req, res) {
   }
 
   const requests = await get('requests/all');
-  res.render('pages/viewRequests', { data: requests });
+  res.render('pages/viewRequests', { data: requests, username: req.session.user });
 });
 
 app.get('/approveRequests', async function (req, res) {
@@ -93,7 +93,7 @@ app.get('/approveRequests', async function (req, res) {
     res.redirect('/');
   }
   const requests = await get('requests/all');
-  res.render('pages/approveRequests', { data: requests });
+  res.render('pages/approveRequests', { data: requests, username: req.session.user });
 });
 
 app.get('/viewDevs', async function (req, res) {
@@ -110,7 +110,7 @@ app.get('/viewDevs', async function (req, res) {
 
   developers = filteringCheck(req, developers);
 
-  res.render('pages/viewDevs', { data: developers || [], populateFilter: populateFilter, errorFlag: false});
+  res.render('pages/viewDevs', { data: developers || [], populateFilter: populateFilter, errorFlag: false, username: req.session.user});
 });
 
 app.get('/manageDevs', async  function (req, res) {
@@ -127,7 +127,7 @@ app.get('/manageDevs', async  function (req, res) {
 
   developers = filteringCheck(req,developers);
   
-  res.render('pages/manageDevs', { data: developers || [], populateFilter: populateFilter, errorFlag: false});
+  res.render('pages/manageDevs', { data: developers || [], populateFilter: populateFilter, errorFlag: false, username: req.session.user});
 });
 
 app.get('/', function (req, res) {
@@ -180,6 +180,10 @@ app.post('/requests/add', async (req, res) => {
   res.redirect('/viewRequests');
 });
 
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+});
 /* POSTS FOR API CALLS */
 app.post('/requests/add', async (req, res) => {
   let response = await post('requests/add', req.body);
