@@ -80,6 +80,9 @@ const put = async (url, body) => {
 
 app.get('/viewRequests', async function (req, res) {
   console.log(req.session);
+  if(!req.session.user){
+    res.redirect('/');
+  }
 
   const requests = await get('requests/all');
   res.render('pages/viewRequests', { data: requests });
@@ -87,7 +90,9 @@ app.get('/viewRequests', async function (req, res) {
 
 app.get('/approveRequests', async function (req, res) {
   console.log(req.session);
-
+  if(!req.session.user){
+    res.redirect('/');
+  }
   const requests = await get('requests/all');
   res.render('pages/approveRequests', { data: requests });
 });
@@ -95,7 +100,9 @@ app.get('/approveRequests', async function (req, res) {
 app.get('/viewDevs', async function (req, res) {
 
   console.log(req.session);
-
+  if(!req.session.user){
+    res.redirect('/');
+  }
   let developers = await get('developers/all');
 
   let skillsAll = await get('skills/all');
@@ -109,6 +116,9 @@ app.get('/viewDevs', async function (req, res) {
 
 app.get('/manageDevs', async function (req, res) {
   console.log(req.session);
+  if(!req.session.user){
+    res.redirect('/');
+  }
   let developers = await get('developers/all');
 
   let skillsAll = await get('skills/all');
@@ -146,8 +156,9 @@ app.get('/authenticateUser', async (req, res) => {
   const access_token = await getBearerToken(req?.query?.code);
   
   const userData = await getUserInfo(access_token);
+  console.log(userData);
   if(!req.session.user){
-    req.session.user = userData.name;
+    req.session.user = userData.login;
   }
   res.redirect('/userCredentials');
 });
@@ -166,14 +177,6 @@ app.post('/requests/update', async (req, res) => {
 
   res.redirect('/approveRequests');
 });
-
-
-// middleware to make 'user' available to all templates
-// app.use(function(req, res, next) {
-//   res.locals.user = req.session.user;
-//   next();
-// });
-
 
 app.listen(3000, function (req, res) {
   console.log(`App listening at port ${port}`);
