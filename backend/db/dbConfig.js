@@ -1,11 +1,20 @@
-let mysql = require('mysql');
+require('dotenv').config();
+const mysql = require('mysql');
+
+const {
+  HOST,
+  PORT,
+  USER,
+  PASSWORD,
+  DATABASE,
+} = process.env;
 
 let db = mysql.createConnection({
-  host: "rent-a-dev-mydb-mlm8gyowdhvd.cdpckwejswol.us-east-1.rds.amazonaws.com",
-  port: 3306,
-  user: "admin",
-  password: "WeLoveJavaScript",
-  database: 'rentadev',
+  host: HOST,
+  port: PORT,
+  user: USER,
+  password: PASSWORD,
+  database: DATABASE,
 });
 
 db.connect(function(err) {
