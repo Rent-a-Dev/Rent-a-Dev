@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 
@@ -41,6 +41,21 @@ const post = async (url, body) => {
   }
 };
 
+const put = async (url, body) => {
+  try {
+    const response = await fetch(`${process.env.API}/${url}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 app.get('/viewRequests', async function (req, res) {
   const requests = await get('requests/all');
@@ -76,6 +91,17 @@ app.post('/requests/add', async (req, res) => {
   }
 
   res.redirect('/viewRequests');
+});
+
+app.post('/requests/update', async (req, res) => {
+  let response = await put('requests/update', req.body);
+  if (response.status === 200) {
+    console.log('Request Successful');
+  } else {
+    console.log('Request Unsuccessful');
+  }
+
+  res.redirect('/approveRequests');
 });
 
 app.listen(port, function (req, res) {
