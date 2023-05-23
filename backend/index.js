@@ -13,6 +13,7 @@ const {
   getRequestsWithNames,
   getSkills,
   getProficiencies,
+  getOwnRequestsWithNames,
 } = require('./db/dbHandler.js');
 
 const express = require('express');
@@ -42,8 +43,14 @@ app.get('/requests', function (req, res) {
   });
 });
 
-app.get('/requests/all', function (req, res) {
-  getRequestsWithNames().then(data => {
+app.get('/requests/view', function (req, res) {
+  getRequestsWithNames(req.query.loggedInUser).then(data => {
+    res.send(data);
+  });
+});
+
+app.get('/requests/approve', function (req, res) {
+  getOwnRequestsWithNames(req.query.loggedInUser).then(data => {
     res.send(data);
   });
 });
