@@ -6,9 +6,10 @@ const insertNewDeveloper = async ({
   lastName,
   available,
   teamId,
+  skills,
 }) => {
   if (typeof firstName === undefined || typeof lastName === undefined || typeof available === undefined || typeof teamId === undefined) {
-    throw new Error('Values cannot be undefined')
+    throw new Error('Values cannot be undefined');
   }
 
   let sql = `INSERT INTO developers (
@@ -24,8 +25,97 @@ const insertNewDeveloper = async ({
       if (err) {
         throw err;
       }
-      
+
       return;
+    });
+
+  if (!!skills) {
+
+    for (const skill of skills) {
+
+      const id = await getLastIdForDevelopers();
+      const skillId = await getSkillIdByName(skill.skillName);
+      const proficiencyId = await getProficiencyIdByName(skill.proficiency);
+
+      let sql_skills = `INSERT INTO developers_skills (
+          developer_id,
+          skill_id,
+          proficiency_id)
+          VALUES (${id}, ${skillId}, ${proficiencyId})`;
+
+      db.query(
+        sql_skills,
+        function (err) {
+          if (err) {
+            throw err;
+          }
+
+          return;
+        });
+    }
+  }
+};
+
+const getLastIdForDevelopers = async () => {
+  return new Promise(resolve => {
+    let sql = `SELECT developer_id FROM developers ORDER BY developer_id DESC LIMIT 1`;
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then((res) => {
+      return res[0].developer_id;
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
+const getSkillIdByName = async (skillName) => {
+  return new Promise(resolve => {
+    let sql = `SELECT skill_id FROM skills where skill = \"${skillName}\"`;
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then((res) => {
+      return res[0].skill_id;
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
+const getProficiencyIdByName = async (proficiency) => {
+  return new Promise(resolve => {
+    let sql = `SELECT proficiency_id FROM proficiencies where proficiency = \"${proficiency}\"`;
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then((res) => {
+      return res[0].proficiency_id;
+    })
+    .catch((err) => {
+      return err;
     });
 };
 
@@ -247,17 +337,95 @@ const getRequests = async () => {
     });
 };
 
+const getSkills = async () => {
+
+  return new Promise(resolve => {
+    let sql = 'SELECT * FROM skills';
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then((res) => {
+      return mapSKills(res);
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
+const getProficiencies = async () => {
+
+  return new Promise(resolve => {
+    let sql = 'SELECT * FROM proficiencies';
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then((res) => {
+      return mapProficiencies(res);
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
+
+const getRequestsWithNames = async () => {
+
+  return new Promise(resolve => {
+    let sql = `SELECT r.request_id, r.developer_id, r.team_lead_id, r.start_date, r.end_date, r.amount_of_hours, r.request_status, 
+    d.first_name AS devFirstName, d.last_name AS devLastName, tl.first_name AS leadRequestFirstName, tl.last_name AS leadRequestLastName,
+    tlb.first_name AS leadFirstName, tlb.last_name AS leadLastName 
+    FROM requests r 
+    JOIN developers d 
+    ON r.developer_id = d.developer_id
+    JOIN teams t ON
+    d.team_id = t.team_id
+    JOIN team_leads tlb
+    ON t.team_lead_id = tlb.team_lead_id
+    JOIN team_leads tl 
+    ON r.team_lead_id = tl.team_lead_id
+     `;
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then((res) => {
+      return mapRequestsAll(res);
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
 const createRequest = async ({
   developerId,
   teamLeadId,
   startDate,
   endDate,
   amountOfHours,
-  requestStatus,
 }) => {
 
-  if (typeof developerId === undefined || typeof teamLeadId === undefined || typeof startDate === undefined 
-    || typeof endDate === undefined || typeof amountOfHours === undefined || typeof requestStatus === undefined) {
+  if (developerId === undefined || teamLeadId === undefined || startDate === undefined 
+    || endDate === undefined || amountOfHours === undefined) {
     
     throw new Error('Values cannot be undefined');
   }
@@ -267,19 +435,16 @@ const createRequest = async ({
       team_lead_id,
       start_date,
       end_date,
-      amount_of_hours,
-      request_status)
-      VALUES (${developerId}, ${teamLeadId}, \"${startDate}\", \"${endDate}\", ${amountOfHours}, \"${requestStatus}\")`;
+      amount_of_hours)
+      VALUES (${developerId}, ${teamLeadId}, "${new Date(startDate).toISOString()}", "${new Date(endDate).toISOString()}", ${amountOfHours})`;
 
-  db.query(
-    sql,
-    function (err) {
-      if (err) {
-        throw err;
-      }
+  try {
 
-      return;
-    });
+    db.query(sql);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 const updateAvailability = async ({
@@ -438,6 +603,32 @@ const mapRequests = (requests) => {
   return mappedRequests;
 };
 
+const mapRequestsAll = (requests) => {
+
+  let mappedRequests = [];
+
+  for (const req of requests) {
+
+    mappedRequests.push({
+      requestId: req.request_id,
+      developerId: req.developer_id,
+      teamLeadId: req.team_lead_id,
+      startDate: (new Date(req.start_date)).toLocaleDateString(),
+      endDate: (new Date(req.end_date)).toLocaleDateString(),
+      amountOfHours: req.amount_of_hours,
+      requestStatus: req.request_status,
+      devFirstName: req.devFirstName,
+      devLastName: req.devLastName,
+      leadFirstName: req.leadFirstName,
+      leadLastName: req.leadLastName,
+      leadRequestFirstName: req.leadRequestFirstName, 
+      leadRequestLastName: req.leadRequestLastName,
+    });
+  }
+
+  return mappedRequests;
+};
+
 const mapDevSkills = (devSkills) => {
 
   let mappedDevSkills = [];
@@ -485,6 +676,35 @@ const mapTeams = (teams) => {
   return mappedTeams;
 };
 
+const mapSKills = (skills) => {
+
+  let mappedSkills = [];
+
+  for (const skill of skills) {
+
+    mappedSkills.push({
+      skillId: skill.skill_id,
+      skill: skill.skill,
+    });
+  }
+
+  return mappedSkills;
+};
+
+const mapProficiencies = (proficiencies) => {
+
+  let mappedProficiencies = [];
+
+  for (const proficiency of proficiencies) {
+
+    mappedProficiencies.push({
+      proficiencyId: proficiency.proficiency_id,
+      proficiency: proficiency.proficiency,
+    });
+  }
+
+  return mappedProficiencies;
+};
 module.exports = {
   getDevelopers,
   insertNewDeveloper,
@@ -498,4 +718,7 @@ module.exports = {
   updateRequestStatus,
   getDevelopersWithAllInfo,
   getLoggedInTeamLead,
+  getRequestsWithNames,
+  getSkills,
+  getProficiencies,
 };
