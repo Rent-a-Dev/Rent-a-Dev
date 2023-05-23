@@ -487,8 +487,23 @@ const updateAvailability = async ({
   developerId,
   available,
 }) => {
-  return;
-}
+  let isAvailable;
+  if (available == 'true'){
+    isAvailable = 1
+  }
+  else{
+    isAvailable = 0;
+  }
+  let sql = `UPDATE developers SET available = ${isAvailable} WHERE developer_id = \"${developerId}\"`;
+
+  db.query(
+    sql,
+    function (err) {
+      if (err) {
+        throw err;
+      }
+    });
+};
 
 const updateRequestStatus = async ({
   requestId,
@@ -758,4 +773,5 @@ module.exports = {
   getSkills,
   getProficiencies,
   getOwnRequestsWithNames,
+  updateAvailability,
 };
