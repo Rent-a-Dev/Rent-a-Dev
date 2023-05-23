@@ -382,7 +382,7 @@ const getProficiencies = async () => {
 };
 
 
-const getRequestsWithNames = async () => {
+const getRequestsWithNames = async (loggedInUser) => {
 
   return new Promise(resolve => {
     let sql = `SELECT r.request_id, r.developer_id, r.team_lead_id, r.start_date, r.end_date, r.amount_of_hours, r.request_status, 
@@ -397,6 +397,42 @@ const getRequestsWithNames = async () => {
     ON t.team_lead_id = tlb.team_lead_id
     JOIN team_leads tl 
     ON r.team_lead_id = tl.team_lead_id
+    WHERE tl.github_username = \"${loggedInUser}\"
+     `;
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then((res) => {
+      return mapRequestsAll(res);
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
+const getOwnRequestsWithNames = async (loggedInUser) => {
+
+  return new Promise(resolve => {
+    let sql = `SELECT r.request_id, r.developer_id, r.team_lead_id, r.start_date, r.end_date, r.amount_of_hours, r.request_status, 
+    d.first_name AS devFirstName, d.last_name AS devLastName, tl.first_name AS leadRequestFirstName, tl.last_name AS leadRequestLastName,
+    tlb.first_name AS leadFirstName, tlb.last_name AS leadLastName 
+    FROM requests r 
+    JOIN developers d 
+    ON r.developer_id = d.developer_id
+    JOIN teams t ON
+    d.team_id = t.team_id
+    JOIN team_leads tlb
+    ON t.team_lead_id = tlb.team_lead_id
+    JOIN team_leads tl 
+    ON r.team_lead_id = tl.team_lead_id
+    WHERE tlb.github_username = \"${loggedInUser}\"
      `;
 
     db.query(sql, (err, res) => {
@@ -721,4 +757,5 @@ module.exports = {
   getRequestsWithNames,
   getSkills,
   getProficiencies,
+  getOwnRequestsWithNames,
 };

@@ -83,7 +83,7 @@ app.get('/viewRequests', async function (req, res) {
     res.redirect('/');
   }
 
-  const requests = await get('requests/all');
+  const requests = await get(`requests/view?loggedInUser=${req.session.user}`);
   res.render('pages/viewRequests', { data: requests, username: req.session.user });
 });
 
@@ -92,7 +92,7 @@ app.get('/approveRequests', async function (req, res) {
   if(!req.session.user){
     res.redirect('/');
   }
-  const requests = await get('requests/all');
+  const requests = await get(`requests/approve?loggedInUser=${req.session.user}`);
   res.render('pages/approveRequests', { data: requests, username: req.session.user });
 });
 
