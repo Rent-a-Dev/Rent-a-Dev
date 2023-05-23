@@ -10,12 +10,24 @@ const clientId = process.env.CLIENT_ID;
 const bodyParser = require("body-parser");
 const { addDevBody } = require( './public/js/Helpers/addingNewRequest.js' );
 const { getBearerToken, getUserInfo } = require( './public/js/Helpers/authentication.js' );
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 
 app.set('view engine', 'ejs');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(session({
+  secret: "sosecret",
+  saveUninitialized: false,
+  resave: true,
+  cookie: {
+    expires: 600000
+  }
+}));
+
+app.use(cookieParser());
 
 const get = async url => {
   try {
@@ -67,16 +79,22 @@ const put = async (url, body) => {
 };
 
 app.get('/viewRequests', async function (req, res) {
+  console.log(req.session);
+
   const requests = await get('requests/all');
   res.render('pages/viewRequests', { data: requests });
 });
 
 app.get('/approveRequests', async function (req, res) {
+  console.log(req.session);
+
   const requests = await get('requests/all');
   res.render('pages/approveRequests', { data: requests });
 });
 
 app.get('/viewDevs', async function (req, res) {
+
+  console.log(req.session);
 
   let developers = await get('developers/all');
 
@@ -90,7 +108,7 @@ app.get('/viewDevs', async function (req, res) {
 });
 
 app.get('/manageDevs', async function (req, res) {
-
+  console.log(req.session);
   let developers = await get('developers/all');
 
   let skillsAll = await get('skills/all');
@@ -128,7 +146,9 @@ app.get('/authenticateUser', async (req, res) => {
   const access_token = await getBearerToken(req?.query?.code);
   
   const userData = await getUserInfo(access_token);
-  console.log(userData);
+  if(!req.session.user){
+    req.session.user = userData.name;
+  }
   res.redirect('/userCredentials');
 });
 
@@ -147,6 +167,12 @@ app.post('/requests/update', async (req, res) => {
   res.redirect('/approveRequests');
 });
 
+
+// middleware to make 'user' available to all templates
+// app.use(function(req, res, next) {
+//   res.locals.user = req.session.user;
+//   next();
+// });
 
 
 app.listen(3000, function (req, res) {
