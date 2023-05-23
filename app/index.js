@@ -196,6 +196,18 @@ app.post('/requests/add', async (req, res) => {
   res.redirect('/viewRequests');
 });
 
+app.post('/availibility/update', async (req, res) => {
+  if (req.body.available){
+    let response = await post('availibility/update', req.body);
+    if (response.status === 200) {
+      console.log('Request Successful');
+    } else {
+      console.log('Request Unsuccessful');
+    }
+  }
+  res.redirect('/manageDevs');
+});
+
 app.post('/requests/update', async (req, res) => {
   let response = await put('requests/update', req.body);
   if (response.status === 200) {

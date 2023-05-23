@@ -14,6 +14,7 @@ const {
   getSkills,
   getProficiencies,
   getOwnRequestsWithNames,
+  updateAvailability,
 } = require('./db/dbHandler.js');
 
 const express = require('express');
@@ -91,6 +92,15 @@ app.post('/requests/add', function (req, res) {
 app.post('/developers/add', function (req, res) {
   try {
     insertNewDeveloper(req.body);
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(406).send(error);
+  }
+});
+
+app.post('/availibility/update', function (req, res) {
+  try {
+    updateAvailability(req.body);
     res.sendStatus(200);
   } catch (error) {
     res.status(406).send(error);
