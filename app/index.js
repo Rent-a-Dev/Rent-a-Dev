@@ -132,7 +132,7 @@ app.get('/manageDevs', async  function (req, res) {
 
 app.get('/', function (req, res) {
   
-  res.render('pages/login', {clientId: clientId});
+  res.render('pages/login', {clientId: clientId, redirect: process.env.REDIRECT_URL});
 });
 
 app.post('/manageDevs/add', async function(req, res) {
