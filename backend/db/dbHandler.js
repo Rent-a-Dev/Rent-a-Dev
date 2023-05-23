@@ -141,7 +141,7 @@ const getDevelopers = async () => {
     });
 };
 
-const getDevelopersWithTeamInfo = async () => {
+const getOwnDevelopersWithTeamInfo = async (loggedInUser) => {
 
   return new Promise(resolve => {
 
@@ -153,7 +153,8 @@ const getDevelopersWithTeamInfo = async () => {
       JOIN teams
       ON developers.team_id = teams.team_id
       JOIN team_leads
-      ON teams.team_lead_id = team_leads.team_lead_id`;
+      ON teams.team_lead_id = team_leads.team_lead_id
+      WHERE team_leads.github_username = \"${loggedInUser}\"`;
 
     db.query(sql, (err, res) => {
       if (err) {
@@ -172,18 +173,57 @@ const getDevelopersWithTeamInfo = async () => {
     });
 };
 
-const getDevelopersWithAllInfo = async () => {
+const getDevelopersWithTeamInfo = async (loggedInUser) => {
 
   return new Promise(resolve => {
 
-    let sql = `SELECT developers.developer_id, skills.skill, proficiencies.proficiency
+    let sql = `SELECT developers.developer_id, developers.available, developers.first_name, 
+      developers.last_name, developers.team_id, teams.team_name, teams.team_lead_id,
+      team_leads.first_name AS lead_first_name, team_leads.last_name AS lead_last_name,
+      team_leads.github_username
       FROM developers
-      JOIN developers_skills
-      ON developers.developer_id = developers_skills.developer_id
-      JOIN skills
-      ON developers_skills.skill_id = skills.skill_id
-      JOIN proficiencies
-      ON developers_skills.proficiency_id = proficiencies.proficiency_id`;
+      JOIN teams
+      ON developers.team_id = teams.team_id
+      JOIN team_leads
+      ON teams.team_lead_id = team_leads.team_lead_id
+      WHERE team_leads.github_username != \"${loggedInUser}\"
+      AND developers.available = 1`;
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then((res) => {
+      return mapDevelopersWithTeamInfo(res);
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
+const getDevelopersWithAllInfo = async (loggedInUser) => {
+
+  return new Promise(resolve => {
+
+    let sql = `SELECT d.developer_id, skills.skill, proficiencies.proficiency
+    FROM developers d
+    JOIN developers_skills
+    ON d.developer_id = developers_skills.developer_id
+    JOIN skills
+    ON developers_skills.skill_id = skills.skill_id
+    JOIN proficiencies
+    ON developers_skills.proficiency_id = proficiencies.proficiency_id
+    JOIN teams t
+    ON d.team_id = t.team_id
+    JOIN team_leads tl
+    ON t.team_lead_id = tl.team_lead_id
+    WHERE tl.github_username != \"${loggedInUser}\"
+    AND d.available = 1`;
 
     db.query(sql, (err, res) => {
       if (err) {
@@ -196,7 +236,60 @@ const getDevelopersWithAllInfo = async () => {
   })
     .then(async (res) => {
       let devWithSkills = mapDevelopersWithSkills(res);
-      let originalDevelopers = await getDevelopersWithTeamInfo();
+      let originalDevelopers = await getDevelopersWithTeamInfo(loggedInUser);
+
+      for (let developer of originalDevelopers) {
+
+        let skills = [];
+
+        for (let devSkill of devWithSkills) {
+
+          if (devSkill.developerId === developer.developerId) {
+            skills.push({
+              skill: devSkill.skill,
+              proficiency: devSkill.proficiency,
+            });
+          }
+        }
+        developer['skills'] = skills;
+      }
+      return originalDevelopers;
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
+const getOwnDevelopersWithAllInfo = async (loggedInUser) => {
+
+  return new Promise(resolve => {
+
+    let sql = `SELECT d.developer_id, skills.skill, proficiencies.proficiency
+      FROM developers d
+      JOIN developers_skills
+      ON d.developer_id = developers_skills.developer_id
+      JOIN skills
+      ON developers_skills.skill_id = skills.skill_id
+      JOIN proficiencies
+      ON developers_skills.proficiency_id = proficiencies.proficiency_id
+      JOIN teams t
+      ON d.team_id = t.team_id
+      JOIN team_leads tl
+      ON t.team_lead_id = tl.team_lead_id
+      WHERE tl.github_username = \"${loggedInUser}\"`;
+
+    db.query(sql, (err, res) => {
+      if (err) {
+        return console.error(err.message);
+      } else {
+        resolve(res);
+      }
+    }
+    );
+  })
+    .then(async (res) => {
+      let devWithSkills = mapDevelopersWithSkills(res);
+      let originalDevelopers = await getOwnDevelopersWithTeamInfo(loggedInUser);
 
       for (let developer of originalDevelopers) {
 
@@ -774,4 +867,5 @@ module.exports = {
   getProficiencies,
   getOwnRequestsWithNames,
   updateAvailability,
+  getOwnDevelopersWithAllInfo
 };
