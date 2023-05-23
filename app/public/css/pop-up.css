@@ -15,6 +15,26 @@
   background: rgba(0, 0, 0, 0.29);
 }
 
+.overlay:target {
+  visibility: visible;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label-pair {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.input-label-pair.left {
+  justify-content: flex-start;
+}
+
 .pop-up-main {
   display: flex;
   flex-direction: column;
@@ -27,7 +47,6 @@
 
   background: #FDEBD3;
 }
-
 
 #pop-up-avail {
   flex-direction: row;
@@ -83,6 +102,10 @@ input {
   border-radius: 1rem;
   padding: 0.5rem;
   width: 7rem;
+}
+
+input[type=radio] {
+  width: auto;
 }
 
 input:invalid {

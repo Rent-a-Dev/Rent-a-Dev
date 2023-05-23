@@ -282,6 +282,13 @@ const createRequest = async ({
     });
 };
 
+const updateAvailability = async ({
+  developerId,
+  available,
+}) => {
+  return;
+}
+
 const updateRequestStatus = async ({
   requestId,
   developerId,

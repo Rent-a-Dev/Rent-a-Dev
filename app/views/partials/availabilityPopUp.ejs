@@ -3,16 +3,25 @@
   <link rel="stylesheet" href="css/pop-up.css" type="text/css">
 </head>
 
-<article class="overlay">
-  <section class="pop-up-main" id="pop-up-avail">
-    <h3 id="pop-up-avail-heading">Change availability</h3>
-    <label for="startInput">Start Date:</label>
-    <input type="date" required id="startInput" />
-    <label for="endInput">End Date:</label>
-    <input type="date" required id="endInput" />
-    <label for="hourInput">Hours:</label>
-    <input type="number" min=1 required id="hourInput" />
-    <button id="cancelButton">Cancel</button>
-    <button id="acceptButton">Accept</button>
+<dialog class="overlay" id="availability-pop-up">
+  <section class="pop-up-main">
+    <article class="close-container">
+      <a href="#" class="close-pop-up">X</a>
+    </article>
+    <form action="/availibility/update" method="post">
+
+      <h3 id="pop-up-avail-heading">Change Availability</h3>
+      <input type="text" name="developerId" id="developerId" hidden />
+      <p>Availabile?</p>
+      <article class="input-label-pair left">
+        <input type="radio" id="available" name="available" value="true"/>
+        <label for="available">Yes</label>
+      </article>
+      <article class="input-label-pair left">
+        <input type="radio" id="not-available" name="available" value="false"/>
+        <label for="not-available">No</label>
+      </article>
+      <button id="cancelButton">Submit</button>
+    </form>
   </section>
-</article>
+</dialog>

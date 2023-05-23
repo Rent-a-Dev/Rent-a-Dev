@@ -1,14 +1,18 @@
 <%- include('../partials/head', {title: 'Manage Devs' }) %>
 
-  <link rel="stylesheet" href="css/viewDevs.css">
-  <main id="ViewDevs">
+<script src="js/viewDevs.js"></script>
 
-    <%- include('../partials/searchAndFilter',{requestsPage: false})%>
-      <section class="devCardContainer">
-        <% for( let index=0; index < data.length; index++ ) { %>
-          <%- include('../partials/devCard.ejs', {dev: data[index]}) %>
-            <% } %>
-      </section>
-  </main>
+<link rel="stylesheet" href="css/viewDevs.css">
+<main id="ViewDevs">
 
-  <%- include('../partials/footer') %>
+  <%- include('../partials/searchAndFilter',{requestsPage: false})%>
+    <section class="devCardContainer">
+      <% for( let index=0; index < data.length; index++ ) { %>
+        <%- include('../partials/devCard.ejs', {dev: data[index], isManage: true}) %>
+          <% } %>
+    </section>
+</main>
+
+<%- include('../partials/availabilityPopup') %>
+
+<%- include('../partials/footer') %>

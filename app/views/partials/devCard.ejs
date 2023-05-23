@@ -33,7 +33,12 @@
     </ul>
   </details>
 
-  <button class="cardButton" onclick="alert('Coming Soon!')">
-    Request
-  </button>
+  <a class="cardButton" onclick="showRequestPopup('<%= dev.developerId %>')" href="<%= (isManage && '#availability-pop-up') || '#request-pop-up' %>">
+    <% if (isManage) { %>
+      Update
+    <% } else { %>
+      Request
+    <% } %>
+  </a>
+
 </article>
