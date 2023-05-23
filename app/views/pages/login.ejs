@@ -1,0 +1,15 @@
+
+<%- include('../partials/head', {title: 'Login', showNav: false}) %>
+<link rel="stylesheet" href="css/login.css">
+
+<article class="container">
+  <h2>Login Github:</h2>
+  <form action="https://github.com/login/oauth/authorize" method="GET">
+    <input type="hidden" name="client_id" value="<%=clientId%>">
+    <input type="hidden" name="redirect_uri" value="http://localhost:3000/authenticateUser">
+    <input type="hidden" name="scope" value="user">
+    <button class="gitButton" type="submit">Login</button>
+  </form>
+</article>
+
+<%- include('../partials/footer') %>

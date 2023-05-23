@@ -11,6 +11,8 @@ const {
   updateRequestStatus,
   getDevelopersWithAllInfo,
   getRequestsWithNames,
+  getSkills,
+  getProficiencies,
 } = require('./db/dbHandler.js');
 
 const express = require('express');
@@ -94,6 +96,18 @@ app.put('/requests/update', function (req, res) {
     res.sendStatus(200);
   } catch (error) {
     res.status(406).send(error);
+  }
+});
+
+app.get('/skills/all', async function(req, res) {
+
+  try{
+
+    let skills = await getSkills();
+    let proficiencies = await getProficiencies();
+    res.send({skillNames: skills, proficiencyNames: proficiencies});
+  } catch (error) {
+    res.status(500).send(error);
   }
 });
 

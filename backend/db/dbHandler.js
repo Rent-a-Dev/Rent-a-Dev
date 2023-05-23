@@ -362,7 +362,7 @@ const getSkills = async () => {
 const getProficiencies = async () => {
 
   return new Promise(resolve => {
-    let sql = 'SELECT * FROM skills';
+    let sql = 'SELECT * FROM proficiencies';
 
     db.query(sql, (err, res) => {
       if (err) {
