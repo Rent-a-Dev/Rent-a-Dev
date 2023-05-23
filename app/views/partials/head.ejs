@@ -12,8 +12,7 @@
     <%= title %>
   </title>
 </head>
-
 <body>
   <% if (showNav) { %>
-    <%- include('nav',{title: title})%>
+    <%- include('nav',{title: title, username: username})%>
   <% } %>
