@@ -36,6 +36,19 @@
 
 .cardButton {
   margin: 1rem 0rem;
+  background: #264E70;
+  border-radius: 1rem;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  color: #FFFFFF;
+  font-size: 1rem;
+}
+
+.cardButton:hover {
+  background: #1c3a53;
 }
 
 .skills {

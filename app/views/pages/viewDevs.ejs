@@ -1,7 +1,9 @@
 <%- include('../partials/head', {title: 'View Devs', showNav: true }) %>
 
-  <link rel="stylesheet" href="css/viewDevs.css">
-  <main id="ViewDevs">
+<script src="js/viewDevs.js"></script>
+
+<link rel="stylesheet" href="css/viewDevs.css">
+<main id="ViewDevs">
 
     <%- include('../partials/searchAndFilter',{requestsPage: true, populateFilter})%>
       <section class="devCardContainer">
@@ -11,4 +13,6 @@
       </section>
   </main>
 
-  <%- include('../partials/footer') %>
+<%- include('../partials/requestPopup') %>
+
+<%- include('../partials/footer') %>

@@ -77,7 +77,7 @@ app.post('/requests/add', function (req, res) {
     createRequest(req.body);
     res.sendStatus(200);
   } catch (error) {
-    res.status(406).send(error)
+    res.status(406).send(error);
   }
 });
 

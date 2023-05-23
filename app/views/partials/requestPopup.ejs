@@ -1,0 +1,25 @@
+<head>
+
+  <link rel="stylesheet" href="css/pop-up.css" type="text/css">
+</head>
+
+<dialog class="overlay" id="request-pop-up">
+  <section class="pop-up-main">
+    <article class="close-container">
+      <a href="#" class="close-pop-up">X</a>
+    </article>
+    <form action="/requests/add" method="post">
+
+      <h3 id="pop-up-avail-heading">Request This Dev</h3>
+      <input type="text" name="developerId" id="developerId" hidden />
+      <input type="text" name="teamLeadId" id="teamLeadId" value="1" hidden />
+      <label for="startDate">Start Date:</label>
+      <input type="date" required id="startDate" name="startDate" />
+      <label for="endDate">End Date:</label>
+      <input type="date" required id="endDate" name="endDate"/>
+      <label for="amountOfHours">Hours:</label>
+      <input type="number" min=1 required id="amountOfHours" name="amountOfHours"/>
+      <button id="cancelButton">Request</button>
+    </form>
+  </section>
+</dialog>

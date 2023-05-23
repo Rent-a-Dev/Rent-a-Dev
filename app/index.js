@@ -5,7 +5,7 @@ const {
 } = require('./public/js/Helpers/SearchAndFiltering.js');
 const express = require('express');
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const clientId = process.env.CLIENT_ID;
 const bodyParser = require("body-parser");
 const { addDevBody } = require( './public/js/Helpers/addingNewRequest.js' );
@@ -45,22 +45,21 @@ const get = async url => {
   }
 };
 
-const post = async (url, body ) => {
+const post = async (url, body) => {
   try {
     const response = await fetch(`${process.env.API}/${url}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
-    const json = await response.json();
 
-    return json;
+    return response;
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 const put = async (url, body) => {
   try {
@@ -114,7 +113,8 @@ app.get('/viewDevs', async function (req, res) {
   res.render('pages/viewDevs', { data: developers || [], populateFilter: populateFilter, errorFlag: false});
 });
 
-app.get('/manageDevs', async function (req, res) {
+app.get('/manageDevs', async  function (req, res) {
+  
   console.log(req.session);
   if(!req.session.user){
     res.redirect('/');
@@ -131,6 +131,7 @@ app.get('/manageDevs', async function (req, res) {
 });
 
 app.get('/', function (req, res) {
+  
   res.render('pages/login', {clientId: clientId});
 });
 
@@ -167,6 +168,30 @@ app.get('/userCredentials', async (req, res) => {
   res.redirect('/manageDevs');
 });
 
+/* POSTS FOR API CALLS */
+app.post('/requests/add', async (req, res) => {
+  let response = await post('requests/add', req.body);
+  if (response.status === 200) {
+    console.log('Request Successful');
+  } else {
+    console.log('Request Unsuccessful');
+  }
+
+  res.redirect('/viewRequests');
+});
+
+/* POSTS FOR API CALLS */
+app.post('/requests/add', async (req, res) => {
+  let response = await post('requests/add', req.body);
+  if (response.status === 200) {
+    console.log('Request Successful');
+  } else {
+    console.log('Request Unsuccessful');
+  }
+
+  res.redirect('/viewRequests');
+});
+
 app.post('/requests/update', async (req, res) => {
   let response = await put('requests/update', req.body);
   if (response.status === 200) {
@@ -178,7 +203,7 @@ app.post('/requests/update', async (req, res) => {
   res.redirect('/approveRequests');
 });
 
-app.listen(3000, function (req, res) {
+app.listen(port, function (req, res) {
   console.log(`App listening at port ${port}`);
 });
 
