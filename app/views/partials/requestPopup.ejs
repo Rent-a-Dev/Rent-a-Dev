@@ -6,26 +6,27 @@
 <dialog class="overlay" id="request-pop-up">
   <section class="pop-up-main">
     <article class="close-container">
-      <a href="#" class="close-pop-up">X</a>
+      <h3 class="pop-up-avail-heading">Request This Dev</h3>
+      <h3 class="pop-up-avail-heading"><a href="#" class="close-pop-up" onclick="closeModal()">&#10005;</a></h3>
     </article>
     <form action="/requests/add" method="post">
-      
-      <h3 id="pop-up-avail-heading">Request This Dev</h3>
       <input type="text" name="developerId" id="developerId" hidden />
       <input type="text" name="teamLeadId" id="teamLeadId" value="1" hidden />
       <article class="input-label-pair">
         <label for="startDate">Start Date:</label>
-        <input type="date" required id="startDate" name="startDate" />
+        <input type="date" required id="startDate" name="startDate"/>
       </article>
       <article class="input-label-pair">
         <label for="endDate">End Date:</label>
         <input type="date" required id="endDate" name="endDate"/>
       </article>
       <article class="input-label-pair">
-        <label for="amountOfHours">Hours:</label>
+        <label for="amountOfHours">Total Hours:</label>
         <input type="number" min=1 required id="amountOfHours" name="amountOfHours"/>
       </article>
-      <button id="cancelButton">Request</button>
+      <button id="acceptButton">Request</button>
     </form>
   </section>
 </dialog>
+
+<script src="js/requestPopup.js"></script>
