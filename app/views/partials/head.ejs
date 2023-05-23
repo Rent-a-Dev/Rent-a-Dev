@@ -14,4 +14,6 @@
 </head>
 
 <body>
-  <%- include('nav',{title: title})%>
+  <% if (showNav) { %>
+    <%- include('nav',{title: title})%>
+  <% } %>

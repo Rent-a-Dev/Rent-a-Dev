@@ -9,6 +9,7 @@ const port = process.env.PORT;
 const clientId = process.env.CLIENT_ID;
 const bodyParser = require("body-parser");
 const { addDevBody } = require( './public/js/Helpers/addingNewRequest.js' );
+const { getBearerToken, getUserInfo } = require( './public/js/Helpers/authentication.js' );
 
 app.set('view engine', 'ejs');
 
@@ -49,10 +50,6 @@ const post = async (url, body ) => {
   }
 }
 
-const authFunc = async () => {
-  const authResponse = await fetch("https://github.com/login/oauth/authorize")
-  return authResponse;
-}
 const put = async (url, body) => {
   try {
     const response = await fetch(`${process.env.API}/${url}`, {
@@ -93,7 +90,6 @@ app.get('/viewDevs', async function (req, res) {
 });
 
 app.get('/manageDevs', async function (req, res) {
-  // authFunc(); 
 
   let developers = await get('developers/all');
 
@@ -112,18 +108,14 @@ app.get('/', function (req, res) {
 
 app.post('/manageDevs/add', async function(req, res) {
   
-  // This is for error handling.
   if(!req.body?.nameInput || !req.body?.surnameInput || !req.body?.teamInput || !req.body?.skillsInput){
-    // res.render('pages/manageDevs', { data: [], populateFilter: [], errorFlag: true});
-    // Need to render a popup failure here.
   }
+
   const allTeams = await get('teams');
   const body = await addDevBody(req.body.nameInput, req.body.surnameInput, req.body.teamInput, req.body.skillsInput, allTeams);
   
-  console.log(body);
-  // call the appropriate post function to /developers/add
   const insertResponse = await post('developers/add', body);
-  console.log(insertResponse);
+
   if(!insertResponse){
     //Fail pop up
   }
@@ -132,49 +124,18 @@ app.post('/manageDevs/add', async function(req, res) {
 });
 
 app.get('/authenticateUser', async (req, res) => {
-  const body = new URLSearchParams();
-  let access_token;
-  body.append('client_id', clientId );
-  body.append('client_secret', process.env.GIT_SECRET );
-  body.append('code', req?.query?.code);
-  try {
-    const response = await fetch('https://github.com/login/oauth/access_token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'application/json'
-      },
-      body:body
-    });
-
-    const json = await response.json();
-    access_token = json.access_token;
-  } catch (error) {
-    console.log('ERRORS');
-    console.log(error);
-  }
-
-  try {
-    const response = await fetch('https://api.github.com/user', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Bearer ${access_token}`
-      },
-    });
-
-    const json = await response.json();
-    console.log(json);
-  } catch (error) {
-    console.log('ERRORS');
-    console.log(error);
-  }
+  
+  const access_token = await getBearerToken(req?.query?.code);
+  
+  const userData = await getUserInfo(access_token);
+  console.log(userData);
   res.redirect('/userCredentials');
 });
 
 app.get('/userCredentials', async (req, res) => {
   res.redirect('/manageDevs');
 });
+
 app.post('/requests/update', async (req, res) => {
   let response = await put('requests/update', req.body);
   if (response.status === 200) {
