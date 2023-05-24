@@ -87,9 +87,9 @@ app.get('/teamLead/loggedIn/:githubUsername', function (req, res) {
   });
 });
 
-app.post('/requests/add', function (req, res) {
+app.post('/requests/add/:loggedInUser', function (req, res) {
   try {
-    createRequest(req.body);
+    createRequest(req.body, req.params.loggedInUser);
     res.sendStatus(200);
   } catch (error) {
     res.status(406).send(error);
