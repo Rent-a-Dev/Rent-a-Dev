@@ -3,7 +3,7 @@ const mysql = require('mysql');
 
 const {
   HOST,
-  PORT,
+  DBPORT,
   USER,
   PASSWORD,
   DATABASE,
@@ -11,7 +11,7 @@ const {
 
 let db = mysql.createConnection({
   host: HOST,
-  port: PORT,
+  port: DBPORT,
   user: USER,
   password: PASSWORD,
   database: DATABASE,
