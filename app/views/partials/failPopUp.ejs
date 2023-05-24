@@ -1,14 +1,17 @@
 
 <link rel="stylesheet" href="css/pop-up.css" type="text/css">
-<article class="overlay">
+<dialog class="overlay" id="fail-pop-up">
   <section class="pop-up-main">
     <img src="images/error.svg" alt="error cross" />
     <h1 class="pop-up-heading" id="fail-pop-up">
       Sorry!
     </h1>
     <h5 class="pop-up-label">
-      <%=myLabel%>
+      <%=message%>
     </h5>
-    <button id="fail-button">Okay</button>
+    <form action="/handlePopUp" method="GET">
+      <input type="hidden" name="redirect_url" value="<%=redirect_url%>">
+      <button type="submit" id="fail-button">Okay</button>
+    </form>
   </section>
-</article>
+</dialog>

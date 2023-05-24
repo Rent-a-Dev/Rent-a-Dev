@@ -1,15 +1,18 @@
 
 <link rel="stylesheet" href="css/pop-up.css" type="text/css">
 
-<article class="overlay">
+<dialog id="success-pop-up" class="overlay">
   <section class="pop-up-main">
     <img src="images/success.svg" alt="Successful tick" />
     <h1 class="pop-up-heading" id="success-pop-up">
       Successful!
     </h1>
     <h5 class="pop-up-label">
-      <%=myLabel%>
+      <%=message%>
     </h5>
-    <button id="success-button" onclick="buttonHandler()">Okay</button>
+    <form action="/handlePopUp" method="GET">
+      <input type="hidden" name="redirect_url" value="<%=redirect_url%>">
+      <button type="submit" id="success-button">Okay</button>
+    </form>
   </section>
-</article>
+</dialog>

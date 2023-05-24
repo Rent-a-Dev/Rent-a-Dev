@@ -1,5 +1,13 @@
 <%- include('../partials/head', {title: 'Team requests', showNav: true }) %>
 
+<% if(feedback){%>
+  <% if(feedback.type === 'success') {%>
+    <%- include('../partials/successPopUp',{message: feedback.message, redirect_url: feedback.redirect}) %>
+    <%}%>
+    <% if(feedback.type === 'fail') {%>
+      <%- include('../partials/failPopUp',{message: feedback.message, redirect_url: feedback.redirect}) %>
+      <%}%>
+<%}%>
   <%- include('../partials/requestTable', {isApproveRequests : false, data})%>
 
     <%- include('../partials/footer') %>

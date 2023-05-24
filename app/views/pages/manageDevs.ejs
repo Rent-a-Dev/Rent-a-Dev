@@ -4,7 +4,15 @@
 
 <link rel="stylesheet" href="css/viewDevs.css">
 <main id="ViewDevs">
-
+  
+  <% if(feedback){%>
+    <% if(feedback.type === 'success') {%>
+      <%- include('../partials/successPopUp',{message: feedback.message, redirect_url: feedback.redirect}) %>
+      <%}%>
+      <% if(feedback.type === 'fail') {%>
+        <%- include('../partials/failPopUp',{message: feedback.message, redirect_url: feedback.redirect}) %>
+        <%}%>
+  <%}%>
   <%- include('../partials/searchAndFilter',{requestsPage: false})%>
     <section class="devCardContainer">
       <% for( let index=0; index < data.length; index++ ) { %>
