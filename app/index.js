@@ -7,7 +7,6 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const clientId = process.env.CLIENT_ID;
-const bodyParser = require("body-parser");
 const { addDevBody } = require( './public/js/Helpers/addingNewRequest.js' );
 const { getBearerToken, getUserInfo } = require( './public/js/Helpers/authentication.js' );
 const session = require("express-session");
