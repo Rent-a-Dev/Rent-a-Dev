@@ -78,7 +78,6 @@ const put = async (url, body) => {
 };
 
 app.get('/viewRequests', async function (req, res) {
-  console.log(req.session);
   if(!req.session.user){
     res.redirect('/');
   }
@@ -88,7 +87,6 @@ app.get('/viewRequests', async function (req, res) {
 });
 
 app.get('/approveRequests', async function (req, res) {
-  console.log(req.session);
   if(!req.session.user){
     res.redirect('/');
   }
@@ -114,7 +112,6 @@ app.get('/viewDevs', async function (req, res) {
 
 app.get('/manageDevs', async  function (req, res) {
   
-  console.log(req.session);
   if(!req.session.user){
     res.redirect('/');
   }
@@ -125,7 +122,6 @@ app.get('/manageDevs', async  function (req, res) {
   let populateFilter = populateSearchAndFilter(developers, skillsAll);
 
   developers = filteringCheck(req,developers);
-  console.log(req.session);
   res.render('pages/manageDevs', { data: developers || [], populateFilter: populateFilter, feedback: req.session.popup || {type: undefined, message: undefined, redirect: undefined}, username: req.session.user});
 });
 
@@ -135,7 +131,6 @@ app.get('/', function (req, res) {
 });
 
 app.get('/handlePopUp', function(req, res) {
-  console.log(req);
   if(req.session.popup){
     delete req.session.popup;
   }
@@ -145,7 +140,6 @@ app.get('/handlePopUp', function(req, res) {
 app.post('/manageDevs/add', async function(req, res) {
   
   if(!req.body?.nameInput || !req.body?.surnameInput || !req.body?.teamInput || !req.body?.skillsInput){
-    console.log('Enters');
     req.session.popup = {type:'fail', message: 'couldn\'t add the dev', redirect: '/manageDevs'};
     res.redirect('/manageDevs');
     return;
@@ -173,7 +167,6 @@ app.get('/authenticateUser', async (req, res) => {
   const access_token = await getBearerToken(req?.query?.code);
   
   const userData = await getUserInfo(access_token);
-  console.log(userData);
   if(!req.session.user){
     req.session.user = userData.login;
   }
