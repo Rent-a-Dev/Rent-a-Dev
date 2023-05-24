@@ -77,27 +77,24 @@ const put = async (url, body) => {
 };
 
 app.get('/viewRequests', async function (req, res) {
-  console.log(req.session);
   if(!req.session.user){
     res.redirect('/');
   }
 
   const requests = await get(`requests/view/${req.session.user}`);
-  res.render('pages/viewRequests', { data: requests, username: req.session.user });
+  res.render('pages/viewRequests', { data: requests, username: req.session.user, feedback: req.session.popup || {type: undefined, message: undefined, redirect: undefined} });
 });
 
 app.get('/approveRequests', async function (req, res) {
-  console.log(req.session);
   if(!req.session.user){
     res.redirect('/');
   }
   const requests = await get(`requests/approve/${req.session.user}`);
-  res.render('pages/approveRequests', { data: requests, username: req.session.user });
+  res.render('pages/approveRequests', { data: requests, username: req.session.user, feedback: req.session.popup || {type: undefined, message: undefined, redirect: undefined} });
 });
 
 app.get('/viewDevs', async function (req, res) {
 
-  console.log(req.session);
   if(!req.session.user){
     res.redirect('/');
   }
@@ -109,12 +106,11 @@ app.get('/viewDevs', async function (req, res) {
 
   developers = filteringCheck(req, developers);
 
-  res.render('pages/viewDevs', { data: developers || [], populateFilter: populateFilter, errorFlag: false, username: req.session.user});
+  res.render('pages/viewDevs', { data: developers || [], populateFilter: populateFilter, feedback: req.session.popup || {type: undefined, message: undefined, redirect: undefined}, username: req.session.user});
 });
 
 app.get('/manageDevs', async  function (req, res) {
   
-  console.log(req.session);
   if(!req.session.user){
     res.redirect('/');
   }
@@ -125,8 +121,7 @@ app.get('/manageDevs', async  function (req, res) {
   let populateFilter = populateSearchAndFilter(developers, skillsAll);
 
   developers = filteringCheck(req,developers);
-  
-  res.render('pages/manageDevs', { data: developers || [], populateFilter: populateFilter, errorFlag: false, username: req.session.user});
+  res.render('pages/manageDevs', { data: developers || [], populateFilter: populateFilter, feedback: req.session.popup || {type: undefined, message: undefined, redirect: undefined}, username: req.session.user});
 });
 
 app.get('/', function (req, res) {
@@ -134,9 +129,19 @@ app.get('/', function (req, res) {
   res.render('pages/login', {clientId: clientId, redirect: process.env.REDIRECT_URL});
 });
 
+app.get('/handlePopUp', function(req, res) {
+  if(req.session.popup){
+    delete req.session.popup;
+  }
+  res.redirect(req?.query?.redirect_url);
+});
+
 app.post('/manageDevs/add', async function(req, res) {
   
   if(!req.body?.nameInput || !req.body?.surnameInput || !req.body?.teamInput || !req.body?.skillsInput){
+    req.session.popup = {type:'fail', message: 'couldn\'t add the dev', redirect: '/manageDevs'};
+    res.redirect('/manageDevs');
+    return;
   }
 
   const allTeams = await get('teams');
@@ -145,10 +150,15 @@ app.post('/manageDevs/add', async function(req, res) {
   const insertResponse = await post('developers/add', body);
 
   if(!insertResponse){
-    //Fail pop up
+    req.session.popup = {type:'fail', message: 'couldn\'t add the dev', redirect: '/manageDevs'};
+    res.redirect('/manageDevs');
+    return;
   }
   // Success pop up
+  req.session.popup = {type:'success', message: 'Added the dev', redirect: '/manageDevs'};
+
   res.redirect('/manageDevs');
+
 });
 
 app.get('/authenticateUser', async (req, res) => {
@@ -156,7 +166,6 @@ app.get('/authenticateUser', async (req, res) => {
   const access_token = await getBearerToken(req?.query?.code);
   
   const userData = await getUserInfo(access_token);
-  console.log(userData);
   if(!req.session.user){
     req.session.user = userData.login;
   }
@@ -171,37 +180,29 @@ app.get('/userCredentials', async (req, res) => {
 app.post('/requests/add', async (req, res) => {
   let response = await post(`requests/add/${req.session.user}`, req.body);
   if (response.status === 200) {
-    console.log('Request Successful');
+    req.session.popup = {type:'success', message: 'Request Successful', redirect: '/viewRequests'};
+    res.redirect('/viewRequests');
+    return;
   } else {
-    console.log('Request Unsuccessful');
+    req.session.popup = {type:'fail', message: 'Request Unuccessful', redirect: '/viewDevs'};
+    res.redirect('/viewDevs');
+    return;
   }
-
-  res.redirect('/viewRequests');
 });
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
   res.redirect('/');
 });
-/* POSTS FOR API CALLS */
-app.post('/requests/add', async (req, res) => {
-  let response = await post('requests/add', req.body);
-  if (response.status === 200) {
-    console.log('Request Successful');
-  } else {
-    console.log('Request Unsuccessful');
-  }
-
-  res.redirect('/viewRequests');
-});
 
 app.post('/availibility/update', async (req, res) => {
   if (req.body.available){
     let response = await post('availibility/update', req.body);
     if (response.status === 200) {
-      console.log('Request Successful');
+      req.session.popup = {type:'success', message: 'Request Successful', redirect: '/manageDevs'};
+
     } else {
-      console.log('Request Unsuccessful');
+      req.session.popup = {type:'fail', message: 'Request Unuccessful', redirect: '/manageDevs'};
     }
   }
   res.redirect('/manageDevs');
@@ -210,9 +211,9 @@ app.post('/availibility/update', async (req, res) => {
 app.post('/requests/update', async (req, res) => {
   let response = await put('requests/update', req.body);
   if (response.status === 200) {
-    console.log('Request Successful');
+    req.session.popup = {type:'success', message: 'Request Successful', redirect: '/approveRequests'};
   } else {
-    console.log('Request Unsuccessful');
+    req.session.popup = {type:'fail', message: 'Request Unuccessful', redirect: '/approveRequests'};
   }
 
   res.redirect('/approveRequests');
