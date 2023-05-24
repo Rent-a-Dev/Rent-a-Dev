@@ -547,13 +547,12 @@ const getOwnRequestsWithNames = async (loggedInUser) => {
 
 const createRequest = async ({
   developerId,
-  teamLeadId,
   startDate,
   endDate,
   amountOfHours,
-}) => {
+}, loggedInUser) => {
 
-  if (developerId === undefined || teamLeadId === undefined || startDate === undefined 
+  if (developerId === undefined || startDate === undefined 
     || endDate === undefined || amountOfHours === undefined) {
     
     throw new Error('Values cannot be undefined');
@@ -565,7 +564,7 @@ const createRequest = async ({
       start_date,
       end_date,
       amount_of_hours)
-      VALUES (${developerId}, ${teamLeadId}, "${new Date(startDate).toISOString()}", "${new Date(endDate).toISOString()}", ${amountOfHours})`;
+      VALUES (${developerId}, (SELECT team_lead_id FROM team_leads WHERE github_username = \"${loggedInUser}\"), "${new Date(startDate).toISOString()}", "${new Date(endDate).toISOString()}", ${amountOfHours})`;
 
   try {
 

@@ -170,7 +170,7 @@ app.get('/userCredentials', async (req, res) => {
 
 /* POSTS FOR API CALLS */
 app.post('/requests/add', async (req, res) => {
-  let response = await post('requests/add', req.body);
+  let response = await post(`requests/add/${req.session.user}`, req.body);
   if (response.status === 200) {
     console.log('Request Successful');
   } else {
