@@ -169,11 +169,25 @@ app.get('/authenticateUser', async (req, res) => {
   if(!req.session.user){
     req.session.user = userData.login;
   }
-  res.redirect('/userCredentials');
-});
-
-app.get('/userCredentials', async (req, res) => {
-  res.redirect('/manageDevs');
+  let existingUser = await get(`teamLead/loggedIn/${req.session.user}`);
+  if (!existingUser){
+    let name = req.session.user;
+    let surname = "External";
+    let body = {name, surname, loggedInUser: req.session.user};
+    let response = await post(`teamLead/add/`, body);
+    if (response.status === 200) {
+      res.redirect('/manageDevs');
+    } 
+    else {
+      req.session.popup = {type:'fail', message: 'Failed to logged in', redirect: '/login'};
+      res.redirect('/manageDevs');
+      delete req.session.user;
+    } 
+  }
+  else{
+    res.redirect('/manageDevs');
+  }
+  
 });
 
 /* POSTS FOR API CALLS */
