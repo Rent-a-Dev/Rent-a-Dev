@@ -33,25 +33,29 @@ const insertNewDeveloper = async ({
 
     for (const skill of skills) {
 
-      const id = await getLastIdForDevelopers();
-      const skillId = await getSkillIdByName(skill.skillName);
-      const proficiencyId = await getProficiencyIdByName(skill.proficiency);
-
-      let sql_skills = `INSERT INTO developers_skills (
+      try {
+        const id = await getLastIdForDevelopers();
+        const skillId = await getSkillIdByName(skill.skillName);
+        const proficiencyId = await getProficiencyIdByName(skill.proficiency);
+        
+        let sql_skills = `INSERT INTO developers_skills (
           developer_id,
           skill_id,
           proficiency_id)
           VALUES (${id}, ${skillId}, ${proficiencyId})`;
 
-      db.query(
-        sql_skills,
-        function (err) {
-          if (err) {
+          db.query(
+            sql_skills,
+            function (err) {
+              if (err) {
             throw err;
           }
-
+          
           return;
         });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };
@@ -100,11 +104,11 @@ const getSkillIdByName = async (skillName) => {
 
 const getProficiencyIdByName = async (proficiency) => {
   return new Promise(resolve => {
-    let sql = `SELECT proficiency_id FROM proficiencies where proficiency = \"${proficiency}\"`;
+    let sql = `SELECT proficiency_id FROM proficiencies where proficiency = "${proficiency}"`;
 
     db.query(sql, (err, res) => {
       if (err) {
-        return console.error(err.message);
+        throw err;
       } else {
         resolve(res);
       }
@@ -115,7 +119,7 @@ const getProficiencyIdByName = async (proficiency) => {
       return res[0].proficiency_id;
     })
     .catch((err) => {
-      return err;
+      throw err;
     });
 };
 
@@ -338,11 +342,11 @@ const getTeamLeads = async () => {
 const getLoggedInTeamLead = async (githubUsername) => {
 
   return new Promise(resolve => {
-    let sql = `SELECT * FROM team_leads WHERE github_username = \"${githubUsername}\"`;
+    let sql = `SELECT * FROM team_leads WHERE github_username = "${githubUsername}"`;
 
     db.query(sql, (err, res) => {
       if (err) {
-        return console.error(err.message);
+        throw err;
       } else {
         resolve(res);
       }
@@ -350,17 +354,22 @@ const getLoggedInTeamLead = async (githubUsername) => {
     );
   })
     .then((res) => {
-      let teamLead = {
-        teamLeadId: res[0].team_lead_id,
-        firstName: res[0].first_name,
-        lastName: res[0].last_name,
-        githubUsername: res[0].github_username,
-      };
+      let teamLead = {};
+
+      if (Array.isArray(res) && res.length > 0) {
+        
+        teamLead = {
+          teamLeadId: res[0].team_lead_id,
+          firstName: res[0].first_name,
+          lastName: res[0].last_name,
+          githubUsername: res[0].github_username,
+        };
+      }
 
       return teamLead;
     })
     .catch((err) => {
-      return err;
+      throw err;
     });
 };
 

@@ -184,13 +184,10 @@ app.post('/requests/add', async (req, res) => {
 });
 
 app.post('/manageDevs/add', async function(req, res) {
-  
-  if (req.session.popup) {
-    delete req.session.popup;
-  }
+  let popup = {};
 
   if(!req.body?.nameInput || !req.body?.surnameInput || !req.body?.teamInput || !req.body?.skillsInput){
-    req.session.popup = {type:'fail', message: 'couldn\'t add the dev', redirect: '/manageDevs'};
+    popup = {type:'fail', message: 'couldn\'t add the dev', redirect: '/manageDevs'};
   }
 
   const allTeams = await get('teams');
@@ -203,15 +200,16 @@ app.post('/manageDevs/add', async function(req, res) {
   const insertResponse = await post('developers/add', body);
 
   if (!insertResponse) {
-    req.session.popup = {type:'fail', message: 'couldn\'t add the dev', redirect: '/manageDevs'};
+    popup = {type:'fail', message: 'Couldn\'t add the dev', redirect: '/manageDevs'};
   }
   
   if (!req.session.popup) {
-    req.session.popup = {type:'success', message: 'Added the dev', redirect: '/manageDevs'};
+    popup = {type:'success', message: 'Added the dev', redirect: '/manageDevs'};
   }
 
-  res.redirect('/manageDevs');
+  req.session.popup = popup;
 
+  res.redirect('/manageDevs');
 });
 
 app.post('/availibility/update', async (req, res) => {
