@@ -169,10 +169,6 @@ app.get('/authenticateUser', async (req, res) => {
   if(!req.session.user){
     req.session.user = userData.login;
   }
-  res.redirect('/userCredentials');
-});
-
-app.get('/userCredentials', async (req, res) => {
   res.redirect('/manageDevs');
 });
 

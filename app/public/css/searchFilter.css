@@ -1,6 +1,5 @@
 .Search-And-Filter {
-  position: sticky;
-  top: 5%;
+  position: unset;
   display: flex;
   flex-direction: column;
   min-width: 19rem;
@@ -106,4 +105,11 @@
 .inputDetails select {
   width: 70%;
   height: 4rem;
+}
+
+@media (min-width: 600px) {
+  .Search-And-Filter {
+    top: 5%;
+    position: sticky;
+  }
 }
