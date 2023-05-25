@@ -1,15 +1,19 @@
 
 <link rel="stylesheet" href="css/pop-up.css" type="text/css">
 
-<dialog id="success-pop-up" class="overlay">
+<dialog id="success-pop-up" class="overlay" open>
   <section class="pop-up-main">
-    <img src="images/success.svg" alt="Successful tick" />
+    <article class="close-container">
+      <img src="images/success.svg" alt="Successful tick" width="60"/>
+      <h3 class="pop-up-avail-heading success">Success!</h3>
+      <h3 class="pop-up-avail-heading"><a href="#" class="close-pop-up" onclick="closeModal('success-pop-up')">&#10005;</a></h3>
+    </article>
     <h1 class="pop-up-heading" id="success-pop-up">
       Successful!
     </h1>
-    <h5 class="pop-up-label">
-      <%=message%>
-    </h5>
+    <h2 class="pop-up-label">
+      Success: <%=message%>
+    </h2>
     <form action="/handlePopUp" method="GET">
       <input type="hidden" name="redirect_url" value="<%=redirect_url%>">
       <button type="submit" id="success-button">Okay</button>

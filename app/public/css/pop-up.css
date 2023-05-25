@@ -14,19 +14,10 @@
   background: rgba(0, 0, 0, 0.29);
 }
 
-#success-pop-up {
-  visibility: visible;
-}
 
-#fail-pop-up {
-  visibility: visible;
-}
-
+.overlay:target,
 .overlay[open] {
-  visibility: visible;
-}
-
-.overlay:target {
+  animation: 0.5s ease-out 0s 1 pop-up-animation;
   visibility: visible;
 }
 
@@ -80,22 +71,11 @@ form {
   padding-top: 0;
 }
 
-#success-pop-up {
-  color: #264E70;
-}
-
-#fail-pop-up {
-  color: #F9B4AB;
-}
-
 .pop-up-label {
   font-family: 'Inter';
   font-style: normal;
-  font-weight: 700;
-  font-size: 2rem;
-  margin: 0rem;
   color: #000000;
-
+  padding: 1rem;
 }
 
 #success-button {
@@ -165,4 +145,21 @@ input:invalid {
   text-decoration: none;
   color: #264E70;
   padding-left: 3rem;
+}
+
+.success {
+  color: #264E70;
+}
+
+.fail {
+  color: #ec7a6b;
+}
+
+@keyframes pop-up-animation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
