@@ -14,10 +14,10 @@ header {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
-  font-size: 5rem;
+  font-size: auto;
   line-height: 5rem;
   text-align: center;
-
+  margin: 1rem;
   color: #FDEBD3;
 }
 
@@ -27,14 +27,20 @@ nav {
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  
+
 }
 
 @media (min-width: 900px) {
   nav {
     flex-direction: row;
   }
+
+  .MainHeading {
+    font-size: 5rem;
+    margin: auto;
+  }
 }
+
 
 nav a {
   font-family: 'Inter';
