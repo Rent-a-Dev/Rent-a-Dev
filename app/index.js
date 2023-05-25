@@ -187,24 +187,24 @@ app.post('/manageDevs/add', async function(req, res) {
   let popup = {};
 
   if(!req.body?.nameInput || !req.body?.surnameInput || !req.body?.teamInput || !req.body?.skillsInput){
-    popup = {type:'fail', message: 'couldn\'t add the dev', redirect: '/manageDevs'};
-  }
-
-  const allTeams = await get('teams');
-  const teamLead = await get(`teamLead/loggedIn/${req.session.user || ''}`);
-
-  const team = allTeams.find(team => team.teamLeadId === teamLead.teamLeadId);
-
-  const body = await addDevBody(req.body.nameInput, req.body.surnameInput, req.body.skillsInput, team);
-  
-  const insertResponse = await post('developers/add', body);
-
-  if (!insertResponse) {
     popup = {type:'fail', message: 'Couldn\'t add the dev', redirect: '/manageDevs'};
-  }
+  } else {
+    const allTeams = await get('teams');
+    const teamLead = await get(`teamLead/loggedIn/${req.session.user || ''}`);
   
-  if (!req.session.popup) {
-    popup = {type:'success', message: 'Added the dev', redirect: '/manageDevs'};
+    const team = allTeams.find(team => team.teamLeadId === teamLead.teamLeadId);
+  
+    const body = await addDevBody(req.body.nameInput, req.body.surnameInput, req.body.skillsInput, team);
+    
+    const insertResponse = await post('developers/add', body);
+  
+    if (!insertResponse) {
+      popup = {type:'fail', message: 'Couldn\'t add the dev', redirect: '/manageDevs'};
+    }
+    
+    if (!req.session.popup) {
+      popup = {type:'success', message: 'Added the dev', redirect: '/manageDevs'};
+    }
   }
 
   req.session.popup = popup;
