@@ -20,6 +20,7 @@
   margin: 0.5rem;
   box-shadow: 2px 5px 4px rgba(0, 0, 0, 0.25);
   border-radius: 2rem;
+  overflow: auto;
 }
 
 .profile {
