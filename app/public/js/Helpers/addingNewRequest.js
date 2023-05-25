@@ -1,5 +1,5 @@
 
-const addDevBody = async(name, surname, teamInput, skillsInput, allTeams) =>{
+const addDevBody = async(name, surname, skillsInput, team) =>{
   let skills = [];
   let proficiencyNames = [];
   let skillArray = [];
@@ -18,11 +18,11 @@ const addDevBody = async(name, surname, teamInput, skillsInput, allTeams) =>{
     skillArray = [{skillName: skills, proficiency: proficiencyNames}];
   }
 
-  if(!allTeams) {
-    allTeams = {};
+  if(!team) {
+    team = {
+      teamId: null
+    };
   }
-
-  let team = allTeams.find(item => item.teamName === teamInput);
 
   const body = {
     firstName: name,

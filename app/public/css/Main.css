@@ -14,18 +14,33 @@ header {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
-  font-size: 5rem;
-  line-height: 1rem;
-
+  font-size: auto;
+  line-height: 5rem;
+  text-align: center;
+  margin: 1rem;
   color: #FDEBD3;
 }
 
 nav {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
+  align-items: center;
   width: 100%;
+
 }
+
+@media (min-width: 900px) {
+  nav {
+    flex-direction: row;
+  }
+
+  .MainHeading {
+    font-size: 5rem;
+    margin: auto;
+  }
+}
+
 
 nav a {
   font-family: 'Inter';
@@ -33,9 +48,19 @@ nav a {
   font-weight: 700;
   font-size: 1.5rem;
   line-height: 2rem;
+  padding: 0 1rem;
 
   text-decoration: none;
   color: white;
+}
+
+nav a:after {
+  content: '';
+  margin-top: 1rem;
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #F9B4AB;
 }
 
 header details {
@@ -44,4 +69,18 @@ header details {
 
 .currentLink {
   color: #F9B4AB;
+}
+
+nav a.currentLink::after {
+  width: 100%;
+  animation: 1s ease-out 0s 1 underline-animation;
+}
+
+@keyframes underline-animation {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }

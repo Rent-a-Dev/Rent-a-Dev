@@ -136,44 +136,39 @@ app.get('/handlePopUp', function(req, res) {
   res.redirect(req?.query?.redirect_url);
 });
 
-app.post('/manageDevs/add', async function(req, res) {
-  
-  if(!req.body?.nameInput || !req.body?.surnameInput || !req.body?.teamInput || !req.body?.skillsInput){
-    req.session.popup = {type:'fail', message: 'couldn\'t add the dev', redirect: '/manageDevs'};
-    res.redirect('/manageDevs');
-    return;
-  }
-
-  const allTeams = await get('teams');
-  const body = await addDevBody(req.body.nameInput, req.body.surnameInput, req.body.teamInput, req.body.skillsInput, allTeams);
-  
-  const insertResponse = await post('developers/add', body);
-
-  if(!insertResponse){
-    req.session.popup = {type:'fail', message: 'couldn\'t add the dev', redirect: '/manageDevs'};
-    res.redirect('/manageDevs');
-    return;
-  }
-  // Success pop up
-  req.session.popup = {type:'success', message: 'Added the dev', redirect: '/manageDevs'};
-
-  res.redirect('/manageDevs');
-
-});
-
 app.get('/authenticateUser', async (req, res) => {
   
   const access_token = await getBearerToken(req?.query?.code);
   
-  const userData = await getUserInfo(access_token);
-  if(!req.session.user){
+  if (!req.session.user) {
+    const userData = await getUserInfo(access_token);
     req.session.user = userData.login;
   }
-  res.redirect('/userCredentials');
+
+  let existingUser = await get(`teamLead/loggedIn/${req.session.user}`);
+  
+  if (!existingUser || !existingUser.teamLeadId){
+    let name = req.session.user;
+    let surname = "External";
+    let body = {
+      name, 
+      surname, 
+      loggedInUser: req.session.user
+    };
+    
+    let response = await post(`teamLead/add/`, body);
+    
+    if (!response || response.status !== 200) {
+      res.redirect('/');
+    }
+    
+  }
+  res.redirect('/manageDevs');  
 });
 
-app.get('/userCredentials', async (req, res) => {
-  res.redirect('/manageDevs');
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
 });
 
 /* POSTS FOR API CALLS */
@@ -182,17 +177,39 @@ app.post('/requests/add', async (req, res) => {
   if (response.status === 200) {
     req.session.popup = {type:'success', message: 'Request Successful', redirect: '/viewRequests'};
     res.redirect('/viewRequests');
-    return;
   } else {
     req.session.popup = {type:'fail', message: 'Request Unuccessful', redirect: '/viewDevs'};
     res.redirect('/viewDevs');
-    return;
   }
 });
 
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.redirect('/');
+app.post('/manageDevs/add', async function(req, res) {
+  let popup = {};
+
+  if(!req.body?.nameInput || !req.body?.surnameInput || !req.body?.teamInput || !req.body?.skillsInput){
+    popup = {type:'fail', message: 'couldn\'t add the dev', redirect: '/manageDevs'};
+  }
+
+  const allTeams = await get('teams');
+  const teamLead = await get(`teamLead/loggedIn/${req.session.user || ''}`);
+
+  const team = allTeams.find(team => team.teamLeadId === teamLead.teamLeadId);
+
+  const body = await addDevBody(req.body.nameInput, req.body.surnameInput, req.body.skillsInput, team);
+  
+  const insertResponse = await post('developers/add', body);
+
+  if (!insertResponse) {
+    popup = {type:'fail', message: 'Couldn\'t add the dev', redirect: '/manageDevs'};
+  }
+  
+  if (!req.session.popup) {
+    popup = {type:'success', message: 'Added the dev', redirect: '/manageDevs'};
+  }
+
+  req.session.popup = popup;
+
+  res.redirect('/manageDevs');
 });
 
 app.post('/availibility/update', async (req, res) => {
