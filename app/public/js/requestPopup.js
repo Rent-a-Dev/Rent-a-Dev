@@ -18,8 +18,3 @@ start.addEventListener('change', function () {
   }
 
 }, false);
-
-let closeModal = () => {
-  const popup = document.getElementById('request-pop-up')
-  popup.close();
-}

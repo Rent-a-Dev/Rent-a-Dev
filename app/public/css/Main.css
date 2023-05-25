@@ -38,10 +38,33 @@ nav a {
   color: white;
 }
 
+nav a:after {
+  content: '';
+  margin-top: 1rem;
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #F9B4AB;
+}
+
 header details {
   margin-left: auto;
 }
 
 .currentLink {
   color: #F9B4AB;
+}
+
+nav a.currentLink::after {
+  width: 100%;
+  animation: 1s ease-out 0s 1 underline-animation;
+}
+
+@keyframes underline-animation {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }

@@ -1,17 +1,19 @@
 
 <link rel="stylesheet" href="css/pop-up.css" type="text/css">
-<dialog class="overlay" id="fail-pop-up">
+<dialog class="overlay" id="fail-pop-up" open>
   <section class="pop-up-main">
-    <img src="images/error.svg" alt="error cross" />
-    <h1 class="pop-up-heading" id="fail-pop-up">
-      Sorry!
-    </h1>
-    <h5 class="pop-up-label">
-      <%=message%>
-    </h5>
+    <article class="close-container">
+      <img src="images/error.svg" alt="error cross" width="60" />
+      <h3 class="pop-up-avail-heading fail">Failure!!</h3>
+      <h3 class="pop-up-avail-heading"><a href="#" class="close-pop-up" onclick="closeModal('fail-pop-up')">&#10005;</a></h3>
+    </article>
+    
+    <h2 class="pop-up-label">
+      Error: <%=message%>
+    </h2>
     <form action="/handlePopUp" method="GET">
       <input type="hidden" name="redirect_url" value="<%=redirect_url%>">
-      <button type="submit" id="fail-button">Okay</button>
+      <button type="submit">Okay</button>
     </form>
   </section>
 </dialog>
