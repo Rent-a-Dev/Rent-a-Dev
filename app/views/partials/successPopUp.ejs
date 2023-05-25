@@ -11,9 +11,9 @@
     <h1 class="pop-up-heading" id="success-pop-up">
       Successful!
     </h1>
-    <h5 class="pop-up-label">
-      <%=message%>
-    </h5>
+    <h2 class="pop-up-label">
+      Success: <%=message%>
+    </h2>
     <form action="/handlePopUp" method="GET">
       <input type="hidden" name="redirect_url" value="<%=redirect_url%>">
       <button type="submit" id="success-button">Okay</button>
