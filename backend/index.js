@@ -15,7 +15,8 @@ const {
   getProficiencies,
   getOwnRequestsWithNames,
   updateAvailability,
-  getOwnDevelopersWithAllInfo
+  getOwnDevelopersWithAllInfo,
+  createTeamLead,
 } = require('./db/dbHandler.js');
 
 const express = require('express');
@@ -90,6 +91,15 @@ app.get('/teamLead/loggedIn/:githubUsername', function (req, res) {
 app.post('/requests/add/:loggedInUser', function (req, res) {
   try {
     createRequest(req.body, req.params.loggedInUser);
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(406).send(error);
+  }
+});
+
+app.post('/teamLead/add', async function (req, res) {
+  try {
+    await createTeamLead(req.body);
     res.sendStatus(200);
   } catch (error) {
     res.status(406).send(error);
