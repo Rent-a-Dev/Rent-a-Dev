@@ -1,14 +1,24 @@
 #requestTableContainer {
-  margin-top: 2em;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  overflow: auto;
+  margin: 2rem;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+@media screen and (min-width: 600px) {
+  #requestTableContainer {
+    align-items: center;
+  }
 }
 
 table {
+  table-layout: auto;
   border-collapse: collapse;
-  width: 90%;
   border: 1px solid black;
   background-color: whitesmoke;
+  scroll-behavior: smooth;
 }
 
 th,
