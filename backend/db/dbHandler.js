@@ -545,6 +545,41 @@ const getOwnRequestsWithNames = async (loggedInUser) => {
     });
 };
 
+const createTeamLead = async ({
+  name,
+  surname,
+  loggedInUser
+}) => {
+
+  let sql = `INSERT INTO team_leads
+      (first_name, last_name, github_username) 
+      VALUES ("${name}", "${surname}", "${loggedInUser}")`;
+
+  try {
+
+    db.query(sql);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+
+  let teamName = name + "'s Team";
+
+  sql = `INSERT INTO teams
+  (team_name, team_lead_id) 
+  VALUES ("${teamName}", (SELECT team_lead_id FROM team_leads WHERE github_username = "${loggedInUser}"))`;
+
+  try {
+
+  db.query(sql);
+  } catch (error) {
+  console.log(error);
+  throw error;
+  }
+
+};
+
+
 const createRequest = async ({
   developerId,
   startDate,
@@ -866,5 +901,6 @@ module.exports = {
   getProficiencies,
   getOwnRequestsWithNames,
   updateAvailability,
-  getOwnDevelopersWithAllInfo
+  getOwnDevelopersWithAllInfo,
+  createTeamLead, 
 };
