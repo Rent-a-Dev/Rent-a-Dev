@@ -198,7 +198,6 @@ app.post('/manageDevs/add', async function(req, res) {
     
     const insertResponse = await post('developers/add', body);
   
-    console.log(insertResponse);
     if (!insertResponse) {
       popup = {type:'fail', message: 'Couldn\'t add the dev', redirect: '/manageDevs'};
     }
