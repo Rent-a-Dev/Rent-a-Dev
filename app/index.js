@@ -186,7 +186,7 @@ app.post('/requests/add', async (req, res) => {
 app.post('/manageDevs/add', async function(req, res) {
   let popup = {};
 
-  if(!req.body?.nameInput || !req.body?.surnameInput || !req.body?.teamInput || !req.body?.skillsInput){
+  if(!req.body?.nameInput || !req.body?.surnameInput || !req.body?.skillsInput){
     popup = {type:'fail', message: 'Couldn\'t add the dev', redirect: '/manageDevs'};
   } else {
     const allTeams = await get('teams');
@@ -198,6 +198,7 @@ app.post('/manageDevs/add', async function(req, res) {
     
     const insertResponse = await post('developers/add', body);
   
+    console.log(insertResponse);
     if (!insertResponse) {
       popup = {type:'fail', message: 'Couldn\'t add the dev', redirect: '/manageDevs'};
     }
